@@ -156,7 +156,7 @@ backup_pagemill() {
     cp ${PAGEMILL_PATH}/deploy/pagemill-config.yaml \
         /home/${USER}/pagemill-backup/pagemill-config.yaml
     # backup docker-compose.yml
-    cp ${PAGEMILL_PATH}/docker-compose.yml \
+    cp ${HOME_DIR}/docker-compose.yml \
         /home/${USER}/pagemill-backup/docker-compose.yml
     # backup database
     cp ${PAGEMILL_PATH}/pg.pagemill-`date +"%m-%d-%y"`.sql \
