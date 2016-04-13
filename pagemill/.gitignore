@@ -3,6 +3,12 @@
 *.db
 .DS_Store
 .coverage
+local_settings.py
+nginx.conf
+local-env.sh
+init-web
+/log
 /static
-log
-deploy/local-env.sh
+/media_files
+pg.pagemill-testing.sql
+media.pagemill-testing.tar.gz
