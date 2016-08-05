@@ -58,8 +58,14 @@
         <span class="icon-bar"></span>
     </button>
     {% block navbar_title %}
-    {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}
-    {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}
+    <a class="navbar-brand" href="https://www.hydroshare.org"><img src="{{ STATIC_URL }}img/logo-sm.png" alt="{{ settings.SITE_TITLE }}"/></a>
+    <a class="navbar-brand" style="font-size: small" href="https://www.hydroshare.org/my-resources">MY RESOURCES</a>
+    <a class="navbar-brand" style="font-size: small" href="https://www.hydroshare.org/search">DISCOVER</a>
+    <a class="navbar-brand" style="font-size: small" href="https://www.hydroshare.org/collaborate">COLLABORATE</a>
+    <a class="navbar-brand" style="font-size: small" href="https://apps.hydroshare.org/apps">APPS</a>
+
+        {#    {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}#}
+{#    {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}#}
     {% endblock%}
 </div>
 <div class="navbar-collapse collapse">
@@ -110,9 +116,9 @@
 <div class="col-md-3 right">
     {% nevercache %}
     {% include "includes/language_selector.html" %}
-    {% include "includes/user_panel.html" %}
+{#    {% include "includes/user_panel.html" %}#}
     {% endnevercache %}
-    <div class="panel panel-default">
+{#    <div class="panel panel-default">#}
     <div class="panel-body">
     {% block right_panel %}
     {% ifinstalled mezzanine.twitter %}
