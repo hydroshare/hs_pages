@@ -1,0 +1,31 @@
+.help-topic-thumbnail {
+    border: 1px solid #DDD;
+    padding: 15%;
+    border-radius: 4px;
+    box-shadow: 1px 1px 4px #DDD;
+    margin-bottom: 20px;
+}
+
+.help-topic-thumbnail i {
+background: #4bb5c1;
+    color: #FFF;
+    padding: 30px;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+}
+
+.help-topic-thumbnail .topic-name {
+    color: #555;
+    font-size: 18px;
+
+}
+
+.help-topic-thumbnail a {
+    text-decoration: none;
+}
+
+.help-topic-thumbnail:hover {
+    background-color: #fbfbfb;
+}

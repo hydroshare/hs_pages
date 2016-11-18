@@ -1,19 +1,275 @@
-{% extends "base.html" %}
-{% load i18n %}
-{# Pabitra: 07-25-2016. This page is no more used. Instead the help page added using the the admin interface serves as the home page for the site#}
-{% block meta_title %}{% trans "HydroShare" %}{% endblock %}
-{% block title %} {% trans "HydroShare Support" %}{% endblock %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n staticfiles %}
 
-{% block breadcrumb_menu %}
-<li class="active">{% trans "Help-1" %}</li>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <title>
+        {% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+
+    {% ifinstalled mezzanine.blog %}
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+        <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+    {% endifinstalled %}
+
+    <link rel="stylesheet" href="{% static "css/font-awesome.css" %}">
+
+    {% compress css %}
+        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+        <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
+        <link rel="stylesheet" href="{% static "css/bootstrap-theme.css" %}">
+        <link rel="stylesheet" href="{% static "css/hs_pages.css" %}">
+        {% if LANGUAGE_BIDI %}
+            <link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">
+        {% endif %}
+        {% ifinstalled cartridge.shop %}
+            <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+            {% if LANGUAGE_BIDI %}
+                <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
+            {% endif %}
+        {% endifinstalled %}
+        {% block extra_css %}{% endblock %}
+    {% endcompress %}
+
+    <script src="https://code.jquery.com/jquery-3.1.1.js"
+            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+            crossorigin="anonymous"></script>
+    {#    The integrity and crossorigin attributes are used for Subresource Integrity (SRI) checking.#}
+
+    {% compress js %}
+        <script src="{% static "js/bootstrap.js" %}"></script>
+        <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        {% block extra_js %}{% endblock %}
+    {% endcompress %}
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body id="{% block body_id %}body{% endblock %}">
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">{% trans "Toggle Navigation" %}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            {% block navbar_title %}
+                <a class="navbar-brand" href="https://www.hydroshare.org"><img src="{{ STATIC_URL }}img/logo-sm.png"
+                                                                               alt="{{ settings.SITE_TITLE }}"/></a>
+                <a class="navbar-brand" style="font-size: small" href="https://www.hydroshare.org/my-resources">MY
+                    RESOURCES</a>
+                <a class="navbar-brand" style="font-size: small" href="https://www.hydroshare.org/search">DISCOVER</a>
+                <a class="navbar-brand" style="font-size: small" href="https://www.hydroshare.org/collaborate">COLLABORATE</a>
+                <a class="navbar-brand" style="font-size: small" href="https://apps.hydroshare.org/apps">APPS</a>
+
+                {#    {% if settings.SITE_TITLE %}<a class="navbar-brand" href="/">{{ settings.SITE_TITLE }}</a>{% endif %}#}
+                {#    {% if settings.SITE_TAGLINE %}<p class="navbar-text visible-lg">{{ settings.SITE_TAGLINE }}</p>{% endif %}#}
+            {% endblock %}
+        </div>
+        <div class="navbar-collapse collapse">
+
+            {% block navbar_dropdown_menu %}{% page_menu "pages/menus/dropdown.html" %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    {% block navbar_search_form %}{% search_form "all" %}{% endblock %}
+    {% nevercache %}
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endnevercache %}
+
+    <h1>{% block title %}{% endblock %}</h1>
+
+    <ul class="breadcrumb">
+        {% spaceless %}
+            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+        {% endspaceless %}
+    </ul>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 col-xs-12">
+            <div class="row">
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-book fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">Introduction to HydroShare</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-file-text fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">HydroShare Resource Types</div>
+
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-database fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">Creating and Managing Resources</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-share-square-o fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">Sharing and Privacy</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-search fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">Discovering Resources</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-users fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">Participation and Collaboration</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-window-maximize fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">Apps</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-sitemap fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">Modeling</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-sm-4 col-xs-6">
+                    <div data-topic="" class="help-topic-thumbnail">
+                        <a href="#">
+                            <div class="text-center">
+                                <i class="fa fa-question-circle-o fa-4x topic-icon" aria-hidden="true"></i>
+                                <div class="topic-name">About HydroShare</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-4 col-xs-12">
+            Stories here
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        {#        {% page_menu "pages/menus/footer.html" %}#}
+    </div>
+</footer>
+
+{% block footer_js %}
+    {% include "includes/footer_scripts.html" %}
 {% endblock %}
 
-{% block main %}
-{% blocktrans %}
-<h2>HydroShare Help!</h2>
-<p>
-    Welcome to HydroShare Help Website.
-</p>
+<script src="{% static "js/bootstrap-toolkit.min.js" %}"></script>
 
-{% endblocktrans %}
-{% endblock %}
+<script>
+    // Makes all topic item containers have the same height.
+    function fixViewPort(current) {
+        if (!current) {
+            return;
+        }
+
+        var containers = $('.help-topic-thumbnail');
+        containers.height("initial");   // Reset height
+
+        var maxHeight = 0;
+        for (var i = 0; i < containers.length; i++) {
+            maxHeight = Math.max($(containers[i]).height(), maxHeight);
+        }
+
+        // set to new max height
+        for (var i = 0; i < containers.length; i++) {
+            $(containers[i]).height(maxHeight);
+        }
+    }
+
+     $(document).ready(function () {
+     });
+
+    // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints
+    (function ($, viewport) {
+        $(document).ready(function () {
+            // Executes when page loads
+            fixViewPort(viewport.current());
+
+            // Executes each time window size changes
+            $(window).resize(
+                    viewport.changed(function () {
+                        fixViewPort(viewport.current());
+                    })
+            );
+        });
+    })(jQuery, ResponsiveBootstrapToolkit);
+</script>
+
+</body>
+
+
+</html>
