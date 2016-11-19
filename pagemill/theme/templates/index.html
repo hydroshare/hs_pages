@@ -62,31 +62,7 @@
         </div>
 
         <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li class=" active" id="dropdown-menu-my-resources">
-                    <a href="https://www.hydroshare.org/my-resources">MY RESOURCES</a>
-                </li>
-
-                <li class="" id="dropdown-menu-search">
-                    <a href="https://www.hydroshare.org/search">DISCOVER</a>
-                </li>
-
-                <li class="" id="dropdown-menu-collaborate">
-                    <a href="https://www.hydroshare.org/collaborate">COLLABORATE</a>
-                </li>
-
-                <li class="" id="dropdown-menu-https:--apps.hydroshare.org-apps">
-                    <a href="https://apps.hydroshare.org/apps" target="_blank">APPS</a>
-                </li>
-
-                <li class="" id="dropdown-menu-http:--pages.hydroshare.org">
-                    <a href="http://pages.hydroshare.org">HELP</a>
-
-                </li><!-- Profile links for extra small screens -->
-                <li class="visible-xs"><a href="/accounts/login/">Sign In</a></li>
-                <li class="visible-xs"><a href="/accounts/logout/">Sign Out</a></li>
-            </ul>
-
+            {% page_menu "pages/menus/dropdown.html" %}
 
             <ul class="nav navbar-nav navbar-right hidden-xs">
 {#                {% ifinstalled mezzanine.accounts %}#}
@@ -120,7 +96,7 @@
 {#                                                {% if request.user.userprofile.middle_name %}#}
 {#                                                    {{ request.user.userprofile.middle_name }} {% endif %}{{ request.user.last_name }}</strong>#}
 {#                                            </div>#}
-                                        <div><strong>Name Placeholder</strong></div>
+                                            <div><strong>Name Placeholder</strong></div>
                                             {% if request.user.email %}
                                                 <div class="text-muted">{{ request.user.email }}</div>
                                             {% endif %}
