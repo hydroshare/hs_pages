@@ -138,6 +138,7 @@
     </div>
 </div>
 
+
 <div class="container">
     <div class="row">
 
@@ -168,20 +169,34 @@
     </div>
 </div>
 
+<div id="home-parallax" class="parallax-window" data-parallax="scroll" data-image-src="{{ STATIC_URL }}img/bg3.jpg">
+
+</div>
+
+<div id="greetings" class="text-center">
+    <div class="col-sm-12">
+        <h2>Welcome to HydroShare</h2>
+        <h4>Sociable on as carriage my position weddings raillery consider. Peculiar trifling absolute and wandered vicinity property yet.</h4>
+        <br>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
-            <h3>Welcome to HydroShare</h3>
-            <h4 class="text-muted">Some message here</h4>
-        </div>
-        <div class="col-sm-12 col-lg-8">
+
+        <div class="col-sm-12 col-lg-8 col-lg-offset-2">
             <div class="row">
                 <div class="col-lg-4 col-sm-6 col-xs-12">
                     <div data-topic="" class="help-topic-thumbnail">
                         <a href="/introduction">
                             <div class="text-center">
                                 <i class="fa fa-book fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">Introduction to HydroShare</div>
+                                <div class="topic-name">
+                                    <div>Introduction to HydroShare</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
+
                             </div>
                         </a>
                     </div>
@@ -192,8 +207,11 @@
                         <a href="/resource-types">
                             <div class="text-center">
                                 <i class="fa fa-file-text fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">HydroShare Resource Types</div>
-
+                                <div class="topic-name">
+                                    <div>HydroShare Resource Types</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -204,7 +222,11 @@
                         <a href="/creating-and-managing-resources">
                             <div class="text-center">
                                 <i class="fa fa-database fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">Creating and Managing Resources</div>
+                                <div class="topic-name">
+                                    <div>Creating and Managing Resources</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -215,7 +237,11 @@
                         <a href="/sharing-and-privacy">
                             <div class="text-center">
                                 <i class="fa fa-share-square-o fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">Sharing and Privacy</div>
+                                <div class="topic-name">
+                                    <div>Sharing and Privacy</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -226,7 +252,11 @@
                         <a href="/discover">
                             <div class="text-center">
                                 <i class="fa fa-search fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">Discovering Resources</div>
+                                <div class="topic-name">
+                                    <div>Discovering Resources</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -237,7 +267,11 @@
                         <a href="/participation-and-collaboration">
                             <div class="text-center">
                                 <i class="fa fa-users fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">Participation and Collaboration</div>
+                                <div class="topic-name">
+                                    <div>Participation and Collaboration</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -248,7 +282,11 @@
                         <a href="/apps">
                             <div class="text-center">
                                 <i class="fa fa-window-maximize fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">Apps</div>
+                                <div class="topic-name">
+                                    <div>Apps</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -259,7 +297,11 @@
                         <a href="/modeling">
                             <div class="text-center">
                                 <i class="fa fa-sitemap fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">Modeling</div>
+                                <div class="topic-name">
+                                    <div>Modeling</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -270,7 +312,11 @@
                         <a href="/about">
                             <div class="text-center">
                                 <i class="fa fa-question-circle-o fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">About HydroShare</div>
+                                <div class="topic-name">
+                                    <div>About HydroShare</div>
+                                    <br>
+                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -292,6 +338,7 @@
 {% endblock %}
 
 <script src="{% static "js/bootstrap-toolkit.min.js" %}"></script>
+<script src="{% static "js/parallax.js" %}"></script>
 
 <script>
     // Makes all topic item containers have the same height.
@@ -303,18 +350,23 @@
         var containers = $('.help-topic-thumbnail');
         containers.height("initial");   // Reset height
 
-        var maxHeight = 0;
+        var containerMaxHeight = 0;
+        var nameMaxHeight = 0;
         for (var i = 0; i < containers.length; i++) {
-            maxHeight = Math.max($(containers[i]).height(), maxHeight);
+            containerMaxHeight = Math.max($(containers[i]).height(), containerMaxHeight);
+            nameMaxHeight = Math.max($(containers[i]).find(".topic-name").height(), nameMaxHeight);
+
         }
 
         // set to new max height
         for (var i = 0; i < containers.length; i++) {
-            $(containers[i]).height(maxHeight);
+            $(containers[i]).height(containerMaxHeight);
+            $(containers[i]).find(".topic-name").height(nameMaxHeight)
         }
     }
 
      $(document).ready(function () {
+         $('.parallax-window').parallax();
      });
 
     // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints

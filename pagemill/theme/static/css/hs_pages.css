@@ -1,32 +1,41 @@
 .help-topic-thumbnail {
     border: 1px solid #DDD;
-    padding: 15%;
+    padding: 10px;
     border-radius: 4px;
-    box-shadow: 1px 1px 4px #DDD;
+    background: #4bb5c1;
     margin-bottom: 20px;
 }
 
 .help-topic-thumbnail i {
-background: #4bb5c1;
     color: #FFF;
     padding: 30px;
-    border-radius: 50%;
     width: 120px;
     height: 120px;
-    margin-bottom: 20px;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .help-topic-thumbnail .topic-name {
-    color: #555;
     font-size: 18px;
+    margin: -10px;
+    margin-top: 10px;
+    color: #4bb5c1;
+    padding: 5px;
+    border-top: 1px solid #DDD;
+    background-color: #FFF;
 }
 
 .help-topic-thumbnail a {
     text-decoration: none;
 }
 
-.help-topic-thumbnail:hover {
-    background-color: #fbfbfb;
+.help-topic-thumbnail:hover  {
+    transition: background-color 0.5s ease;
+    background-color: #093E54;
+}
+
+.help-topic-thumbnail:hover .topic-name {
+    transition: color 0.5s ease;
+    color: #093E54;
 }
 
 .navbar-form.navbar-right:last-child {
@@ -47,7 +56,7 @@ background: #4bb5c1;
     box-shadow: none;
 }
 
-.navbar>.container .navbar-brand {
+.navbar > .container .navbar-brand {
     margin-right: 10px;
 }
 
@@ -92,7 +101,7 @@ background: #4bb5c1;
 }
 
 #profile-menu > .dropdown-toggle:hover, #profile-menu > .dropdown-toggle:focus {
-    background:none;
+    background: none;
 }
 
 #profile-menu {
@@ -101,7 +110,7 @@ background: #4bb5c1;
 .profile-pic-thumbnail {
     width: 40px;
     height: 40px;
-    margin-right:10px;
+    margin-right: 10px;
     margin-bottom: 10px;
     float: left;
 }
@@ -142,7 +151,6 @@ background: #4bb5c1;
     margin-top: 10px;
     margin-left: 6px;
 }
-
 
 .dropdown-user-icon:before {
     content: "\e008";
@@ -239,3 +247,15 @@ li.account {
 }
 
 /*  CSS ARROW ENDS */
+
+#home-parallax {
+    height: 300px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+div#greetings {
+    margin-top: -200px;
+    margin-bottom: 250px;
+    color: #FFF;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.7);
+}
