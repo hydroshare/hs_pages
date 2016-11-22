@@ -251,6 +251,8 @@ li.account {
 #home-parallax {
     height: 300px;
     background: rgba(0, 0, 0, 0.3);
+    box-shadow: inset 0 5px 10px rgba(0, 0, 0, 0.8);
+    margin-top: -20px;
 }
 
 div#greetings {
@@ -261,7 +263,7 @@ div#greetings {
 }
 
 .breadcrumb {
-    background: none;
+    background-color: #FFF;
     border: 1px solid #DDD;
 }
 
@@ -273,4 +275,10 @@ div#greetings {
 
 .breadcrumb a {
     color: #555;
+}
+
+.container-wrapper {
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #DDD;
+    margin-bottom: 20px;
 }

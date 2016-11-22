@@ -123,6 +123,7 @@
     </div>
 </div>
 
+<div class="container-wrapper">
 <div class="container">
     <div class="row">
         {% nevercache %}
@@ -150,6 +151,7 @@
         </div>
     </div>
 </div>
+</div>
 
 {% block banner %}{% endblock %}
 
@@ -164,6 +166,7 @@
         {% endif %}
         {% if not on_home %}
             <div class="col-md-7 middle">{% endif %}
+        <h1>{% block title %}{% endblock %}</h1>
         {% block main %}{% endblock %}
         {% if not on_home %}</div>{% endif %}
     </div>
