@@ -42,7 +42,6 @@
     {% compress js %}
         <script src="{% static "js/bootstrap.js" %}"></script>
         <script src="{% static "js/bootstrap-extras.js" %}"></script>
-        {% block extra_js %}{% endblock %}
     {% endcompress %}
 
     {% block extra_head %}{% endblock %}
@@ -58,80 +57,66 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"><img src="{{ STATIC_URL }}img/logo-sm.png" alt="{{ settings.SITE_TITLE }}"/></a>
+            <a class="navbar-brand" href="/"><img src="{{ STATIC_URL }}img/logo-sm.png"
+                                                  alt="{{ settings.SITE_TITLE }}"/></a>
         </div>
 
         <div class="collapse navbar-collapse">
             {% page_menu "pages/menus/dropdown.html" %}
 
             <ul class="nav navbar-nav navbar-right hidden-xs">
-{#                {% ifinstalled mezzanine.accounts %}#}
-                    {% if request.user.is_authenticated %}
-                        <li id="profile-menu" class="display-block">
-                            {% if request.user.userprofile.picture and request.user.userprofile.picture.url %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <div style="background-image: url('{{ request.user.userprofile.picture.url }}');"
-                                         class="round-image profile-pic-thumbnail pull-left">
+                {#                {% ifinstalled mezzanine.accounts %}#}
+                {% if request.user.is_authenticated %}
+                    <li id="profile-menu" class="display-block">
+                        {% if request.user.userprofile.picture and request.user.userprofile.picture.url %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <div style="background-image: url('{{ request.user.userprofile.picture.url }}');"
+                                     class="round-image profile-pic-thumbnail pull-left">
+                                </div>
+                            </a>
+                        {% else %}
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <div class="profile-pic-thumbnail-small round-image pull-left"></div>
+                            </a>
+                        {% endif %}
+                        <ul class="dropdown-menu arrow_box">
+                            <li class="account">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        {% if request.user.userprofile.picture and request.user.userprofile.picture.url %}
+                                            <div style="background-image: url('{{ request.user.userprofile.picture.url }}');"
+                                                 class="round-image dropdown-profile-pic-thumbnail pull-left">
+                                            </div>
+                                        {% else %}
+                                            <div class="dropdown-profile-pic-thumbnail round-image dropdown-user-icon pull-left"></div>
+                                        {% endif %}
                                     </div>
-                                </a>
-                            {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <div class="profile-pic-thumbnail-small round-image pull-left"></div>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu arrow_box">
-                                <li class="account">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            {% if request.user.userprofile.picture and request.user.userprofile.picture.url %}
-                                                <div style="background-image: url('{{ request.user.userprofile.picture.url }}');"
-                                                     class="round-image dropdown-profile-pic-thumbnail pull-left">
-                                                </div>
-                                            {% else %}
-                                                <div class="dropdown-profile-pic-thumbnail round-image dropdown-user-icon pull-left"></div>
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-8">
-{#                                            <div><strong>{{ request.user.first_name }}#}
-{#                                                {% if request.user.userprofile.middle_name %}#}
-{#                                                    {{ request.user.userprofile.middle_name }} {% endif %}{{ request.user.last_name }}</strong>#}
-{#                                            </div>#}
-                                            <div><strong>Name Placeholder</strong></div>
-                                            {% if request.user.email %}
-                                                <div class="text-muted">{{ request.user.email }}</div>
-                                            {% endif %}
-                                        </div>
+                                    <div class="col-sm-8">
+                                        {#                                            <div><strong>{{ request.user.first_name }}#}
+                                        {#                                                {% if request.user.userprofile.middle_name %}#}
+                                        {#                                                    {{ request.user.userprofile.middle_name }} {% endif %}{{ request.user.last_name }}</strong>#}
+                                        {#                                            </div>#}
+                                        <div><strong>Name Placeholder</strong></div>
+                                        {% if request.user.email %}
+                                            <div class="text-muted">{{ request.user.email }}</div>
+                                        {% endif %}
                                     </div>
+                                </div>
 
-                                    <div class="dropdown-footer">
-                                        <a href="/user/{{ user.id }}/" class="btn btn-primary">Profile</a>
-                                        <a href="#" id="signout-menu" class="btn btn-default">
-                                            <span class="glyphicon glyphicon-log-out"></span> Sign out</a></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <!-- <li id="signup-menu"><a href="{% url 'signup' %}">Sign Up</a></li> -->
-                        <li id="signin-menu"><a href="{% url 'login' %}"><span
-                                class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
-                    {% endif %}
-{#                {% endifinstalled %}#}
-                {% comment %}
-                    <!-- Search Button -->
-                    <li id="search">
-                        <a href="#" id="search-btn" onclick="return false;"><i class="fa fa-search"
-                                                                               id="search-icon"></i> Search</a>
-                        <div class="search-box" id="search-box">
-                            <form class="input-group" role="search" action="{% url 'search' %}">
-                                <input type="text" class="form-control" placeholder="Search" name="q">
-                                <span class="input-group-btn">
-                                    <button class="hl-btn hl-btn-default" type="button">Go!</button>
-                                </span>
-                            </form>
-                        </div>
+                                <div class="dropdown-footer">
+                                    <a href="/user/{{ user.id }}/" class="btn btn-primary">Profile</a>
+                                    <a href="#" id="signout-menu" class="btn btn-default">
+                                        <span class="glyphicon glyphicon-log-out"></span> Sign out</a></span>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
-                {% endcomment %}
+                {% else %}
+                    <!-- <li id="signup-menu"><a href="{% url 'signup' %}">Sign Up</a></li> -->
+                    <li id="signin-menu"><a href="{% url 'login' %}"><span
+                            class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
+                {% endif %}
+                {#                {% endifinstalled %}#}
             </ul>
         </div>
 
@@ -139,79 +124,54 @@
 </div>
 
 <div class="container">
+    <div class="row">
+        {% nevercache %}
+            {% if messages %}
+                <div class="messages col-xs-12">
+                    {% for message in messages %}
+                        <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endnevercache %}
 
-    {% nevercache %}
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    {% endnevercache %}
+        <div class="col-sm-12 col-lg-6 col-lg-offset-6">
+            {% block navbar_search_form %}{% search_form "all" %}{% endblock %}</div>
 
-    <br>
-
-    <ul class="breadcrumb">
-        {% spaceless %}
-            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-        {% endspaceless %}
-    </ul>
-
+        <div class="col-sm-12">
+            <ul class="breadcrumb">
+                {% spaceless %}
+                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                {% endspaceless %}
+            </ul>
+        </div>
+    </div>
 </div>
+
+{% block banner %}{% endblock %}
 
 <div class="container">
     <div class="row">
-        <div class="col-md-2 left">
-            {% block left_panel %}
-                <div class="panel panel-default tree">{% page_menu "pages/menus/tree.html" %}</div>
-            {% endblock %}
-        </div>
-
-        <div class="col-md-7 middle">
-            <h1>{% block title %}{% endblock %}</h1>
-            {% block main %}{% endblock %}
-        </div>
-
-        <div class="col-md-3 right">
-            {% nevercache %}
-                {% include "includes/language_selector.html" %}
-                {#    {% include "includes/user_panel.html" %}#}
-            {% endnevercache %}
-            {#    <div class="panel panel-default">#}
-            <div class="panel-body">
-                {% block right_panel %}
-                    {% ifinstalled mezzanine.twitter %}
-                        {% include "twitter/tweets.html" %}
-                    {% endifinstalled %}
+        {% if not on_home %}
+            <div class="col-md-2 left">
+                {% block left_panel %}
+                    <div class="panel panel-default tree">{% page_menu "pages/menus/tree.html" %}</div>
                 {% endblock %}
             </div>
-        </div>
+        {% endif %}
+        {% if not on_home %}
+            <div class="col-md-7 middle">{% endif %}
+        {% block main %}{% endblock %}
+        {% if not on_home %}</div>{% endif %}
     </div>
 </div>
 
 <footer>
     <div class="container">
-        {% page_menu "pages/menus/footer.html" %}
-
-        <div class="row">
-            <p class="site-info text-center">
-                {% trans "Powered by" %}
-                <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %},
-                <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %}
-                {% trans "and" %}
-                <a href="http://www.djangoproject.com">Django</a>
-                <span class="separator">|</span>
-                {% trans "Theme by" %} <a target="_blank" href="http://getbootstrap.com">Bootstrap</a>
-                {% ifinstalled mezzanine.mobile %}
-                    <span class="separator">|</span>
-                    <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a>
-                {% endifinstalled %}
-            </p>
-        </div>
+        {#        {% page_menu "pages/menus/footer.html" %}#}
     </div>
 </footer>
 
@@ -219,5 +179,56 @@
     {% include "includes/footer_scripts.html" %}
 {% endblock %}
 
+<script src="{% static "js/bootstrap-toolkit.min.js" %}"></script>
+
+{% block extra_js %}{% endblock %}
+
+<script>
+    // Makes all topic item containers have the same height.
+    function fixViewPort(current) {
+        if (!current) {
+            return;
+        }
+
+        var containers = $('.help-topic-thumbnail');
+        containers.height("initial");   // Reset height
+
+        var containerMaxHeight = 0;
+        var nameMaxHeight = 0;
+        for (var i = 0; i < containers.length; i++) {
+            containerMaxHeight = Math.max($(containers[i]).height(), containerMaxHeight);
+            nameMaxHeight = Math.max($(containers[i]).find(".topic-name").height(), nameMaxHeight);
+
+        }
+
+        // set to new max height
+        for (var i = 0; i < containers.length; i++) {
+            $(containers[i]).height(containerMaxHeight);
+            $(containers[i]).find(".topic-name").height(nameMaxHeight)
+        }
+    }
+
+    $(document).ready(function () {
+        $('.parallax-window').parallax();
+    });
+
+    // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints
+    (function ($, viewport) {
+        $(document).ready(function () {
+            // Executes when page loads
+            fixViewPort(viewport.current());
+
+            // Executes each time window size changes
+            $(window).resize(
+                    viewport.changed(function () {
+                        fixViewPort(viewport.current());
+                    })
+            );
+        });
+    })(jQuery, ResponsiveBootstrapToolkit);
+</script>
+
 </body>
+
+
 </html>

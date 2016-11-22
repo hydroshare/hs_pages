@@ -1,391 +1,216 @@
-<!doctype html>
-<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n staticfiles %}
 
-<head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
-    <meta name="description" content="{% block meta_description %}{% endblock %}">
-    <title>
-        {% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
-    <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
-
-    {% ifinstalled mezzanine.blog %}
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
-        <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
-    {% endifinstalled %}
-
-    <link rel="stylesheet" href="{% static "css/font-awesome.css" %}">
-
-    {% compress css %}
-        <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
-        <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
-        <link rel="stylesheet" href="{% static "css/hs_pages.css" %}">
-        {% if LANGUAGE_BIDI %}
-            <link rel="stylesheet" href="{% static "css/bootstrap-rtl.css" %}">
-        {% endif %}
-        {% ifinstalled cartridge.shop %}
-            <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
-            {% if LANGUAGE_BIDI %}
-                <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
-            {% endif %}
-        {% endifinstalled %}
-        {% block extra_css %}{% endblock %}
-    {% endcompress %}
-
-    <script src="https://code.jquery.com/jquery-3.1.1.js"
-            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-            crossorigin="anonymous"></script>
-    {#    The integrity and crossorigin attributes are used for Subresource Integrity (SRI) checking.#}
-
-    {% compress js %}
-        <script src="{% static "js/bootstrap.js" %}"></script>
-        <script src="{% static "js/bootstrap-extras.js" %}"></script>
-        {% block extra_js %}{% endblock %}
-    {% endcompress %}
-
-    {% block extra_head %}{% endblock %}
-</head>
-
-<body id="{% block body_id %}body{% endblock %}">
-
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/"><img src="{{ STATIC_URL }}img/logo-sm.png" alt="{{ settings.SITE_TITLE }}"/></a>
-        </div>
-
-        <div class="collapse navbar-collapse">
-            {% page_menu "pages/menus/dropdown.html" %}
-
-            <ul class="nav navbar-nav navbar-right hidden-xs">
-{#                {% ifinstalled mezzanine.accounts %}#}
-                    {% if request.user.is_authenticated %}
-                        <li id="profile-menu" class="display-block">
-                            {% if request.user.userprofile.picture and request.user.userprofile.picture.url %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <div style="background-image: url('{{ request.user.userprofile.picture.url }}');"
-                                         class="round-image profile-pic-thumbnail pull-left">
-                                    </div>
-                                </a>
-                            {% else %}
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <div class="profile-pic-thumbnail-small round-image pull-left"></div>
-                                </a>
-                            {% endif %}
-                            <ul class="dropdown-menu arrow_box">
-                                <li class="account">
-                                    <div class="row">
-                                        <div class="col-sm-4">
-                                            {% if request.user.userprofile.picture and request.user.userprofile.picture.url %}
-                                                <div style="background-image: url('{{ request.user.userprofile.picture.url }}');"
-                                                     class="round-image dropdown-profile-pic-thumbnail pull-left">
-                                                </div>
-                                            {% else %}
-                                                <div class="dropdown-profile-pic-thumbnail round-image dropdown-user-icon pull-left"></div>
-                                            {% endif %}
-                                        </div>
-                                        <div class="col-sm-8">
-{#                                            <div><strong>{{ request.user.first_name }}#}
-{#                                                {% if request.user.userprofile.middle_name %}#}
-{#                                                    {{ request.user.userprofile.middle_name }} {% endif %}{{ request.user.last_name }}</strong>#}
-{#                                            </div>#}
-                                            <div><strong>Name Placeholder</strong></div>
-                                            {% if request.user.email %}
-                                                <div class="text-muted">{{ request.user.email }}</div>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-
-                                    <div class="dropdown-footer">
-                                        <a href="/user/{{ user.id }}/" class="btn btn-primary">Profile</a>
-                                        <a href="#" id="signout-menu" class="btn btn-default">
-                                            <span class="glyphicon glyphicon-log-out"></span> Sign out</a></span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                    {% else %}
-                        <!-- <li id="signup-menu"><a href="{% url 'signup' %}">Sign Up</a></li> -->
-                        <li id="signin-menu"><a href="{% url 'login' %}"><span
-                                class="glyphicon glyphicon-log-in"></span> Sign In</a></li>
-                    {% endif %}
-{#                {% endifinstalled %}#}
-                {% comment %}
-                    <!-- Search Button -->
-                    <li id="search">
-                        <a href="#" id="search-btn" onclick="return false;"><i class="fa fa-search"
-                                                                               id="search-icon"></i> Search</a>
-                        <div class="search-box" id="search-box">
-                            <form class="input-group" role="search" action="{% url 'search' %}">
-                                <input type="text" class="form-control" placeholder="Search" name="q">
-                                <span class="input-group-btn">
-                                    <button class="hl-btn hl-btn-default" type="button">Go!</button>
-                                </span>
-                            </form>
-                        </div>
-                    </li>
-                {% endcomment %}
-            </ul>
-        </div>
-
+{% block banner %}
+    <div id="home-parallax" class="parallax-window" data-parallax="scroll" data-image-src="{{ STATIC_URL }}img/bg3.jpg">
     </div>
-</div>
 
-
-<div class="container">
-    <div class="row">
-
-        {% nevercache %}
-            {% if messages %}
-                <div class="messages col-xs-12">
-                    {% for message in messages %}
-                        <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endnevercache %}
-
-        <div class="col-sm-12 col-lg-6 col-lg-offset-6">{% block navbar_search_form %}{% search_form "all" %}{% endblock %}</div>
-
-        <h1>{% block title %}{% endblock %}</h1>
-
+    <div id="greetings" class="text-center">
         <div class="col-sm-12">
-        <ul class="breadcrumb">
-            {% spaceless %}
-                {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-            {% endspaceless %}
-        </ul>
+            <h2>Welcome to HydroShare</h2>
+            <h4>Use the links below to learn how to begin sharing and collaborating.</h4>
+            <br>
         </div>
     </div>
-</div>
+{% endblock %}
 
-<div id="home-parallax" class="parallax-window" data-parallax="scroll" data-image-src="{{ STATIC_URL }}img/bg3.jpg">
 
-</div>
-
-<div id="greetings" class="text-center">
-    <div class="col-sm-12">
-        <h2>Welcome to HydroShare</h2>
-        <h4>Sociable on as carriage my position weddings raillery consider. Peculiar trifling absolute and wandered vicinity property yet.</h4>
+{% block main %}
+    <div class="col-sm-12 col-lg-offset-2">
+        <h1>HydroShare Support</h1>
+        <h4 class="text-muted">Get quick answers to the most common questions about how to get started with and use HydroShare.</h4>
         <br>
     </div>
-</div>
-
-<div class="container">
-    <div class="row">
-
-        <div class="col-sm-12 col-lg-8 col-lg-offset-2">
-            <div class="row">
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/introduction">
-                            <div class="text-center">
-                                <i class="fa fa-book fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>Introduction to HydroShare</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
-
+    <div class="col-sm-12 col-lg-8 col-lg-offset-2">
+        <div class="row">
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/introduction">
+                        <div class="text-center">
+                            <i class="fa fa-book fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>Introduction to HydroShare</div>
+                                <br>
+                                <small>Learn more about what you can do with HydroShare</small>
                             </div>
-                        </a>
-                    </div>
+
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/resource-types">
-                            <div class="text-center">
-                                <i class="fa fa-file-text fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>HydroShare Resource Types</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/resource-types">
+                        <div class="text-center">
+                            <i class="fa fa-file-text fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>HydroShare Resource Types</div>
+                                <br>
+                                <small>Learn more about data and model resources in HydroShare</small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/creating-and-managing-resources">
-                            <div class="text-center">
-                                <i class="fa fa-database fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>Creating and Managing Resources</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/creating-and-managing-resources">
+                        <div class="text-center">
+                            <i class="fa fa-database fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>Creating and Managing Resources</div>
+                                <br>
+                                <small>Create new datasets and models and describe with metadata</small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/sharing-and-privacy">
-                            <div class="text-center">
-                                <i class="fa fa-share-square-o fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>Sharing and Privacy</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/sharing-and-privacy">
+                        <div class="text-center">
+                            <i class="fa fa-share-square-o fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>Sharing and Privacy</div>
+                                <br>
+                                <small>Share resources with your colleagues and control who has access</small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/discover">
-                            <div class="text-center">
-                                <i class="fa fa-search fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>Discovering Resources</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/discover">
+                        <div class="text-center">
+                            <i class="fa fa-search fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>Discovering Resources</div>
+                                <br>
+                                <small>Discover datasets and models shared by others</small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/participation-and-collaboration">
-                            <div class="text-center">
-                                <i class="fa fa-users fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>Participation and Collaboration</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/participation-and-collaboration">
+                        <div class="text-center">
+                            <i class="fa fa-users fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>Participation and Collaboration</div>
+                                <br>
+                                <small>No in he real went find mr. Wandered or strictly raillery stanhill as.
+                                </small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/apps">
-                            <div class="text-center">
-                                <i class="fa fa-window-maximize fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>Apps</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/apps">
+                        <div class="text-center">
+                            <i class="fa fa-window-maximize fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>Apps</div>
+                                <br>
+                                <small>No in he real went find mr. Wandered or strictly raillery stanhill as.
+                                </small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/modeling">
-                            <div class="text-center">
-                                <i class="fa fa-sitemap fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>Modeling</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/modeling">
+                        <div class="text-center">
+                            <i class="fa fa-sitemap fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>Modeling</div>
+                                <br>
+                                <small>No in he real went find mr. Wandered or strictly raillery stanhill as.
+                                </small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
+            </div>
 
-                <div class="col-lg-4 col-sm-6 col-xs-12">
-                    <div data-topic="" class="help-topic-thumbnail">
-                        <a href="/about">
-                            <div class="text-center">
-                                <i class="fa fa-question-circle-o fa-4x topic-icon" aria-hidden="true"></i>
-                                <div class="topic-name">
-                                    <div>About HydroShare</div>
-                                    <br>
-                                    <small>No in he real went find mr. Wandered or strictly raillery stanhill as.</small>
-                                </div>
+            <div class="col-lg-4 col-sm-6 col-xs-12">
+                <div data-topic="" class="help-topic-thumbnail">
+                    <a href="/about">
+                        <div class="text-center">
+                            <i class="fa fa-question-circle-o fa-4x topic-icon" aria-hidden="true"></i>
+                            <div class="topic-name">
+                                <div>About HydroShare</div>
+                                <br>
+                                <small>No in he real went find mr. Wandered or strictly raillery stanhill as.
+                                </small>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
-
     </div>
-</div>
-
-<footer>
-    <div class="container">
-        {#        {% page_menu "pages/menus/footer.html" %}#}
-    </div>
-</footer>
-
-{% block footer_js %}
-    {% include "includes/footer_scripts.html" %}
 {% endblock %}
 
-<script src="{% static "js/bootstrap-toolkit.min.js" %}"></script>
-<script src="{% static "js/parallax.js" %}"></script>
+{% block extra_js %}
+    <script src="{% static "js/parallax.js" %}"></script>
 
-<script>
-    // Makes all topic item containers have the same height.
-    function fixViewPort(current) {
-        if (!current) {
-            return;
+    <script>
+        // Makes all topic item containers have the same height.
+        function fixViewPort(current) {
+            if (!current) {
+                return;
+            }
+
+            var containers = $('.help-topic-thumbnail');
+            containers.height("initial");   // Reset height
+
+            var containerMaxHeight = 0;
+            var nameMaxHeight = 0;
+            for (var i = 0; i < containers.length; i++) {
+                containerMaxHeight = Math.max($(containers[i]).height(), containerMaxHeight);
+                nameMaxHeight = Math.max($(containers[i]).find(".topic-name").height(), nameMaxHeight);
+
+            }
+
+            // set to new max height
+            for (var i = 0; i < containers.length; i++) {
+                $(containers[i]).height(containerMaxHeight);
+                $(containers[i]).find(".topic-name").height(nameMaxHeight)
+            }
         }
 
-        var containers = $('.help-topic-thumbnail');
-        containers.height("initial");   // Reset height
-
-        var containerMaxHeight = 0;
-        var nameMaxHeight = 0;
-        for (var i = 0; i < containers.length; i++) {
-            containerMaxHeight = Math.max($(containers[i]).height(), containerMaxHeight);
-            nameMaxHeight = Math.max($(containers[i]).find(".topic-name").height(), nameMaxHeight);
-
-        }
-
-        // set to new max height
-        for (var i = 0; i < containers.length; i++) {
-            $(containers[i]).height(containerMaxHeight);
-            $(containers[i]).find(".topic-name").height(nameMaxHeight)
-        }
-    }
-
-     $(document).ready(function () {
-         $('.parallax-window').parallax();
-     });
-
-    // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints
-    (function ($, viewport) {
         $(document).ready(function () {
-            // Executes when page loads
-            fixViewPort(viewport.current());
-
-            // Executes each time window size changes
-            $(window).resize(
-                    viewport.changed(function () {
-                        fixViewPort(viewport.current());
-                    })
-            );
+            $('.parallax-window').parallax();
         });
-    })(jQuery, ResponsiveBootstrapToolkit);
-</script>
 
-</body>
+        // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints
+        (function ($, viewport) {
+            $(document).ready(function () {
+                // Executes when page loads
+                fixViewPort(viewport.current());
 
-
-</html>
+                // Executes each time window size changes
+                $(window).resize(
+                        viewport.changed(function () {
+                            fixViewPort(viewport.current());
+                        })
+                );
+            });
+        })(jQuery, ResponsiveBootstrapToolkit);
+    </script>
+{% endblock %}

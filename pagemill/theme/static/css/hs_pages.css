@@ -28,7 +28,7 @@
     text-decoration: none;
 }
 
-.help-topic-thumbnail:hover  {
+.help-topic-thumbnail:hover {
     transition: background-color 0.5s ease;
     background-color: #093E54;
 }
@@ -258,4 +258,19 @@ div#greetings {
     margin-bottom: 250px;
     color: #FFF;
     text-shadow: 2px 2px rgba(0, 0, 0, 0.7);
+}
+
+.breadcrumb {
+    background: none;
+    border: 1px solid #DDD;
+}
+
+.breadcrumb > li + li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: ">";
+}
+
+.breadcrumb a {
+    color: #555;
 }
