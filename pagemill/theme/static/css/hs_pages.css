@@ -282,3 +282,31 @@ div#greetings {
     border-bottom: 1px solid #DDD;
     margin-bottom: 20px;
 }
+
+.nav-list a {
+    color: #555;
+}
+
+.navlist-menu-level-0 > a {
+    border-bottom: 1px solid #DDD;
+}
+
+.navlist-menu-level-0 > li > a:not(.collapsed), .navlist-menu-level-0 > li {
+    border-bottom: 1px solid #DDD;
+}
+
+
+.nav > li > a:hover, .nav > li > a:focus {
+}
+
+.nav-list ul {
+    padding-left: 15px;
+}
+
+.tree .active > a {
+    background-color: transparent;
+}
+
+.navlist-menu-level-0 > li:not(.active-branch) {
+    display: none;
+}

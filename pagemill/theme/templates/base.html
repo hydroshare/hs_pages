@@ -158,14 +158,14 @@
 <div class="container">
     <div class="row">
         {% if not on_home %}
-            <div class="col-md-2 left">
+            <div class="col-md-3 left">
                 {% block left_panel %}
-                    <div class="panel panel-default tree">{% page_menu "pages/menus/tree.html" %}</div>
+                    <div class="panel panel-default">{% page_menu "pages/menus/tree.html" %}</div>
                 {% endblock %}
             </div>
         {% endif %}
         {% if not on_home %}
-            <div class="col-md-7 middle">{% endif %}
+            <div class="col-md-9 middle">{% endif %}
         <h1>{% block title %}{% endblock %}</h1>
         {% block main %}{% endblock %}
         {% if not on_home %}</div>{% endif %}
