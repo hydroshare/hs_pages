@@ -160,6 +160,8 @@
         {% if not on_home %}
             <div class="col-md-3 left">
                 {% block left_panel %}
+                    <button id="btn-back" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true">&nbsp;</i>Back</button>
+                    <br><br>
                     <div class="panel panel-default">{% page_menu "pages/menus/tree.html" %}</div>
                 {% endblock %}
             </div>
@@ -212,7 +214,11 @@
     }
 
     $(document).ready(function () {
-        $('.parallax-window').parallax();
+        $("#btn-back").click(function () {
+            var url = $(".breadcrumb a");
+            url = url[url.length - 1];
+            window.location.href = url;
+        });
     });
 
     // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints
