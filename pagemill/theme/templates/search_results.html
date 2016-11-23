@@ -49,7 +49,7 @@
                         <p>{{ result.description|truncatewords_html:20|safe }}</p>
                     {% endif %}
                     {% if result_url %}
-                        <a href="{{ result_url }}">{% trans "Read more" %}</a>
+                        <a href="{{ result_url }}"><i class="fa fa-file-text-o" aria-hidden="true">&nbsp;</i>{% trans "Read more..." %}</a>
                     {% endif %}
                 </div>
             {% endwith %}
