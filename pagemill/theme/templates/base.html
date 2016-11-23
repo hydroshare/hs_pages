@@ -123,63 +123,65 @@
     </div>
 </div>
 
-<div class="container-wrapper">
-<div class="container">
-    <div class="row">
-        {% nevercache %}
-            {% if messages %}
-                <div class="messages col-xs-12">
-                    {% for message in messages %}
-                        <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            {{ message }}
+<div class="main-container">
+
+    <div class="container-wrapper">
+        <div class="container">
+            <div class="row">
+                {% nevercache %}
+                    {% if messages %}
+                        <div class="messages col-xs-12">
+                            {% for message in messages %}
+                                <div class="alert alert-dismissable alert-{{ message.tags }}" data-alert="alert">
+                                    <button type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true">&times;</button>
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
+                    {% endif %}
+                {% endnevercache %}
+
+                <div class="col-sm-12 col-lg-6 col-lg-offset-6">
+                    {% block navbar_search_form %}{% search_form "all" %}{% endblock %}</div>
+
+                <div class="col-sm-12">
+                    <ul class="breadcrumb">
+                        {% spaceless %}
+                            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                        {% endspaceless %}
+                    </ul>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    {% block banner %}{% endblock %}
+
+    <div class="container">
+        <div class="row">
+            {% if not on_home %}
+                {% block left_panel %}
+                    <div class="col-md-3 left">
+                        <button id="btn-back" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true">
+                            &nbsp;</i>Back
+                        </button>
+                        <br><br>
+                        <div class="panel panel-default">{% page_menu "pages/menus/tree.html" %}</div>
+                    </div>
+                {% endblock %}
+
             {% endif %}
-        {% endnevercache %}
-
-        <div class="col-sm-12 col-lg-6 col-lg-offset-6">
-            {% block navbar_search_form %}{% search_form "all" %}{% endblock %}</div>
-
-        <div class="col-sm-12">
-            <ul class="breadcrumb">
-                {% spaceless %}
-                    {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-                {% endspaceless %}
-            </ul>
+            {% if not on_home %}
+                <div class="col-md-9 middle">{% endif %}
+            <h1>{% block title %}{% endblock %}</h1>
+            {% block main %}{% endblock %}
+            {% if not on_home %}</div>{% endif %}
         </div>
     </div>
 </div>
-</div>
-
-{% block banner %}{% endblock %}
-
-<div class="container">
-    <div class="row">
-        {% if not on_home %}
-            {% block left_panel %}
-                <div class="col-md-3 left">
-                    <button id="btn-back" class="btn btn-default"><i class="fa fa-arrow-left" aria-hidden="true">
-                        &nbsp;</i>Back
-                    </button>
-                    <br><br>
-                    <div class="panel panel-default">{% page_menu "pages/menus/tree.html" %}</div>
-                </div>
-            {% endblock %}
-
-        {% endif %}
-        {% if not on_home %}
-            <div class="col-md-9 middle">{% endif %}
-        <h1>{% block title %}{% endblock %}</h1>
-        {% block main %}{% endblock %}
-        {% if not on_home %}</div>{% endif %}
-    </div>
-</div>
-
 
 {% page_menu "pages/menus/footer.html" %}
-
 
 {% block footer_js %}
     {% include "includes/footer_scripts.html" %}

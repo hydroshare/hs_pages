@@ -1,3 +1,14 @@
+html, body {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    height: 100%;
+}
+
+body > .main-container {
+    min-height: calc(100% - 286px);
+    padding-bottom: 20px;
+}
+
 .help-topic-thumbnail {
     border: 1px solid #DDD;
     padding: 10px;
@@ -388,6 +399,13 @@ footer .headline h3{
     -moz-transition: color 0.1s;
     -o-transition: color 0.1s;
     color: #B5E655;
+}
+
+/*undo mezzanine styling*/
+footer {
+    border:0;
+    margin:0;
+    padding: 0;
 }
 
 footer .hl-btn-default {
