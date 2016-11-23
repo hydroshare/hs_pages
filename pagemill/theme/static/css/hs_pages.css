@@ -280,8 +280,8 @@ div#greetings {
 
 .breadcrumb > li + li:before {
     padding: 0 5px;
-    color: #ccc;
-    content: ">";
+    color: #777;
+    content: "> ";
 }
 
 .breadcrumb a {
@@ -432,4 +432,9 @@ h1.page-title {
     border-bottom: 1px solid #DDD;
     padding-bottom: 10px;
     margin-top: 0;
+    color: #4BB5C1;
+}
+
+.editable-original strong {
+    color: #4BB5C1;
 }
