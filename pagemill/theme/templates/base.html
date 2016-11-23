@@ -120,7 +120,6 @@
                 {#                {% endifinstalled %}#}
             </ul>
         </div>
-
     </div>
 </div>
 
@@ -171,11 +170,9 @@
                         <div class="panel panel-default">{% page_menu "pages/menus/tree.html" %}</div>
                     </div>
                 {% endblock %}
-
             {% endif %}
-            {% if not on_home %}
-                <div class="col-md-9 middle">{% endif %}
-            <h1>{% block title %}{% endblock %}</h1>
+            {% if not on_home %}<div class="col-md-9 middle">{% endif %}
+            {% if not on_home %}<h1 class="page-title">{% block title %}{% endblock %}</h1>{% endif %}
             {% block main %}{% endblock %}
             {% if not on_home %}</div>{% endif %}
         </div>
@@ -242,6 +239,4 @@
 </script>
 
 </body>
-
-
 </html>

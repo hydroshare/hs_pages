@@ -427,3 +427,9 @@ footer .form-control:focus {
 footer .sbtn {
 	margin-bottom: 5px;
 }
+
+h1.page-title {
+    border-bottom: 1px solid #DDD;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
