@@ -291,7 +291,7 @@ div#greetings {
     border-bottom: 1px solid #DDD;
 }
 
-.navlist-menu-level-0 > li > a:not(.collapsed), .navlist-menu-level-0 > li {
+.navlist-menu-level-0 > li > a:not(.collapsed):not(:last-child), .navlist-menu-level-0 > li:not(:last-child) {
     border-bottom: 1px solid #DDD;
 }
 
@@ -309,4 +309,21 @@ div#greetings {
 
 .navlist-menu-level-0 > li:not(.active-branch) {
     display: none;
+}
+
+.result {
+    border: 1px solid #DDD;
+    margin-bottom: 10px;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 1px 1px 4px #DDD;
+}
+
+#search-results h5 {
+    margin-top: 0;
+}
+
+#search-results p {
+    border-left: 4px solid #DDD;
+    padding-left: 20px;
 }
