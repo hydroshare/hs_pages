@@ -41,7 +41,7 @@
 
             <div class="col-lg-4 col-sm-6 col-xs-12">
                 <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/resource-types">
+                    <a href="/hydroshare-resource-types">
                         <div class="text-center">
                             <i class="fa fa-file-text fa-4x topic-icon" aria-hidden="true"></i>
                             <div class="topic-name">
@@ -77,7 +77,9 @@
                             <div class="topic-name">
                                 <div>Sharing and Privacy</div>
                                 <br>
-                                <small>Share resources with your colleagues, control who has access, and learn how to formally publish</small>
+                                <small>Share resources with your colleagues, control who has access, and learn how to
+                                    formally publish
+                                </small>
                             </div>
                         </div>
                     </a>
@@ -86,7 +88,7 @@
 
             <div class="col-lg-4 col-sm-6 col-xs-12">
                 <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/discover">
+                    <a href="/discovering-resources">
                         <div class="text-center">
                             <i class="fa fa-search fa-4x topic-icon" aria-hidden="true"></i>
                             <div class="topic-name">
@@ -122,7 +124,8 @@
                             <div class="topic-name">
                                 <div>Apps</div>
                                 <br>
-                                <small>Interact with your resources using web apps for visualization and analysis</small>
+                                <small>Interact with your resources using web apps for visualization and analysis
+                                </small>
                             </div>
                         </div>
                     </a>
@@ -146,35 +149,17 @@
 
             <div class="col-lg-4 col-sm-6 col-xs-12">
                 <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/about">
+                    <a href="/about-hydroshare">
                         <div class="text-center">
                             <i class="fa fa-question-circle-o fa-4x topic-icon" aria-hidden="true"></i>
                             <div class="topic-name">
                                 <div>About HydroShare</div>
                                 <br>
-                                <small>Learn more about design of the HydroShare system, source code, and architecture</small>
+                                <small>Learn more about design of the HydroShare system, source code, and architecture
+                                </small>
                             </div>
                         </div>
                     </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div>
-        <div class="container">
-            <div class="row home-page-block">
-                <div class="col-xs-12">
-                    <br>
-                    <center><strong><h3 class="home-page-block-title">Join the community to start sharing</h3>
-                    </strong>
-                    </center>
-                    <center>
-                        <span>HydroShare is an online collaboration environment for sharing data, models, and code.</span>
-                    </center>
-                    <br>
-                    <center><a class="btn btn-primary btn-signup slideInBlock" href="https://www.hydroshare.org/sign-up/">Sign up now</a>
-                    </center>
                 </div>
             </div>
         </div>
@@ -209,10 +194,6 @@
             }
         }
 
-        $(document).ready(function () {
-            $('.parallax-window').parallax();
-        });
-
         // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints
         (function ($, viewport) {
             $(document).ready(function () {
@@ -227,5 +208,9 @@
                 );
             });
         })(jQuery, ResponsiveBootstrapToolkit);
+
+        $(document).ready(function () {
+            $('.parallax-window').parallax();
+        });
     </script>
 {% endblock %}

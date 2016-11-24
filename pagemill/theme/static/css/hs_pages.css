@@ -74,6 +74,19 @@ body > .main-container {
     box-shadow: none;
 }
 
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #333;
+}
+
+.navbar-toggle {
+    background: #B5B5B5;
+    border-color: #8C8C8C !important;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+
 .navbar > .container .navbar-brand {
     margin-right: 10px;
 }
@@ -215,57 +228,6 @@ li.account {
     margin-bottom: 10px;
 }
 
-/*  CSS ARROW BEGINS */
-
-.arrow_box:after, .arrow_box:before {
-    bottom: 100%;
-    left: 90%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-.arrow_box_top_center:before, .arrow_box_top_center:after {
-    bottom: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-.arrow_box_top_right:after, .arrow_box_top_right:before {
-    bottom: 100%;
-    left: 90%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-}
-
-.arrow_box:after {
-    border-color: rgba(136, 183, 213, 0);
-    border-bottom-color: #FFF;
-    border-width: 10px;
-    margin-left: -10px;
-}
-
-.arrow_box:before {
-    border-color: rgba(194, 225, 245, 0);
-    border-bottom-color: #a2a2a2;
-    border-width: 11px;
-    margin-left: -11px;
-}
-
-/*  CSS ARROW ENDS */
-
 #home-parallax {
     height: 300px;
     background: rgba(0, 0, 0, 0.3);
@@ -314,9 +276,6 @@ div#greetings {
     border-bottom: 1px solid #DDD;
 }
 
-.nav > li > a:hover, .nav > li > a:focus {
-}
-
 .nav-list ul {
     padding-left: 15px;
 }
@@ -324,7 +283,6 @@ div#greetings {
 .navlist-menu-level-0 > li:not(.active-branch) {
     display: none;
 }
-
 
 .tree .active-branch > .tree-menu-item a {
     font-weight: bold;
@@ -463,7 +421,7 @@ p.panel-body {
     display: block;
 }
 
-.tree ul a {
+.tree ul a, .tree-menu-item a {
     display: inline-block;
     padding: 0;
     width: calc(100% - 20px);
@@ -483,4 +441,21 @@ p.panel-body {
 
 .tree i[data-toggle="collapse"]:hover {
     color: #000;
+}
+
+#content img {
+    border: 1px solid #DDD;
+    box-shadow: 1px 1px 4px #DDD;
+}
+
+.sign-up-ad {
+    padding-bottom: 50px;
+    border-top: 1px solid #DDD;
+    background: #EEE;
+    margin-bottom: -20px;
+    margin-top: 70px;
+}
+
+.container.collapsed {
+    height: 0;
 }
