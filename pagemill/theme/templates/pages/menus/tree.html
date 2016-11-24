@@ -11,7 +11,7 @@
                         {% if page.is_current_or_ascendant %} active-branch{% endif %}
                         " id="tree-menu-{{ page.html_id }}">
                         <div class="tree-menu-item">
-                        <a href="{{ page.get_absolute_url }}"
+                        <a {% if not page.is_current %}href="{{ page.get_absolute_url }}"{% endif %}
                             {% if page.has_children_in_menu %}
                                 {% if not page.is_current_or_ascendant %}
                             class="collapsed"

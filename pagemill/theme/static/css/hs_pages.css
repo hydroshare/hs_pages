@@ -261,7 +261,6 @@ div#greetings {
     background-color: #f9f9f9;
     border-bottom: 1px solid #DDD;
     margin-bottom: 20px;
-    padding-top: 5px;
 }
 
 .nav-list a {
@@ -451,11 +450,15 @@ p.panel-body {
 .sign-up-ad {
     padding-bottom: 50px;
     border-top: 1px solid #DDD;
-    background: #EEE;
+    background: #f9f9f9;
     margin-bottom: -20px;
     margin-top: 70px;
 }
 
 .container.collapsed {
     height: 0;
+}
+
+form[role="search"] .form-group {
+    display: inline-block;
 }
