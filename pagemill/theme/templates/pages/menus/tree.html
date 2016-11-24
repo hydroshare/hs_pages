@@ -11,17 +11,13 @@
                         {% if page.is_current_or_ascendant %} active-branch{% endif %}
                         " id="tree-menu-{{ page.html_id }}">
                         <div class="tree-menu-item">
-                        <a {% if not page.is_current %}href="{{ page.get_absolute_url }}"{% endif %}
+                            <a href="{{ page.get_absolute_url }}"
+                               class="{% if page.has_children_in_menu and not page.is_current_or_ascendant %}collapsed{% endif %} {% if page.is_current %}current{% endif %}">{{ page.title }}</a>
                             {% if page.has_children_in_menu %}
-                                {% if not page.is_current_or_ascendant %}
-                            class="collapsed"
-                                {% endif %}
-                            {% endif %}>{{ page.title }}</a>
-                        {% if page.has_children_in_menu %}
-                            <i data-toggle="collapse"
-                               data-target="#collapse-{{ page.html_id }}"
-                               class="fa fa-chevron-right pull-right"></i>
-                        {% endif %}
+                                <i data-toggle="collapse"
+                                   data-target="#collapse-{{ page.html_id }}"
+                                   class="fa fa-chevron-right pull-right"></i>
+                            {% endif %}
                         </div>
                         {# wrap the next line with 'if page.is_current_or_ascendant' #}
                         {# to only show child pages in the menu for the current page #}

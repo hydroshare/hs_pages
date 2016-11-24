@@ -442,9 +442,14 @@ p.panel-body {
     color: #000;
 }
 
+.tree a.current {
+    pointer-events: none;
+}
+
 #content img {
     border: 1px solid #DDD;
     box-shadow: 1px 1px 4px #DDD;
+    padding: 1px;
 }
 
 .sign-up-ad {
