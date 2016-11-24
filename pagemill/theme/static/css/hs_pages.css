@@ -306,14 +306,13 @@ div#greetings {
     color: #555;
 }
 
-.navlist-menu-level-0 > a {
+.navlist-menu-level-0 > li > .tree-menu-item {
     border-bottom: 1px solid #DDD;
 }
 
 .navlist-menu-level-0 > li > a:not(.collapsed):not(:last-child), .navlist-menu-level-0 > li:not(:last-child) {
     border-bottom: 1px solid #DDD;
 }
-
 
 .nav > li > a:hover, .nav > li > a:focus {
 }
@@ -322,12 +321,13 @@ div#greetings {
     padding-left: 15px;
 }
 
-.tree .active > a {
-    background-color: transparent;
-}
-
 .navlist-menu-level-0 > li:not(.active-branch) {
     display: none;
+}
+
+
+.tree .active-branch > .tree-menu-item a {
+    font-weight: bold;
 }
 
 .result {
@@ -353,33 +353,40 @@ footer {
     background: #093E54;
     color: #FFF;
 }
+
 footer a {
-	color: #B5E655;
+    color: #B5E655;
 }
+
 footer a:hover {
-	color: #81D685;
-	text-decoration: none;
+    color: #81D685;
+    text-decoration: none;
 }
+
 footer .headline {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
-footer .headline h3{
-	text-transform: uppercase;
-	color: #FFF;
+
+footer .headline h3 {
+    text-transform: uppercase;
+    color: #FFF;
 }
+
 .legal {
-	padding: 40px 0;
+    padding: 40px 0;
 }
+
 .legal a {
-	color: #B5E655;
-	text-decoration: none;
+    color: #B5E655;
+    text-decoration: none;
 }
+
 .social ul {
     background: #3E7A8C;
     color: white;
     font-size: 24px;
     margin: 0;
-	padding: 0;
+    padding: 0;
 }
 
 .social li {
@@ -411,29 +418,33 @@ footer .headline h3{
 
 /*undo mezzanine styling*/
 footer {
-    border:0;
-    margin:0;
+    border: 0;
+    margin: 0;
     padding: 0;
 }
 
 footer .hl-btn-default {
-	color: #fff;
-	background: none;
+    color: #fff;
+    background: none;
 }
+
 footer .hl-btn-default:hover {
-	color: #3E7A8C;
-	background: #fff;
-	font-weight: bold;
-	border: 1px solid #fff;
+    color: #3E7A8C;
+    background: #fff;
+    font-weight: bold;
+    border: 1px solid #fff;
 }
+
 footer .form-control {
-	border: white;
+    border: white;
 }
+
 footer .form-control:focus {
-	border: white;
+    border: white;
 }
+
 footer .sbtn {
-	margin-bottom: 5px;
+    margin-bottom: 5px;
 }
 
 h1.page-title {
@@ -441,4 +452,35 @@ h1.page-title {
     padding-bottom: 10px;
     margin-top: 0;
     color: #4BB5C1;
+}
+
+p.panel-body {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.tree {
+    display: block;
+}
+
+.tree ul a {
+    display: inline-block;
+    padding: 0;
+    width: calc(100% - 20px);
+}
+
+.tree-menu-item {
+    padding: 5px 10px;
+}
+
+.tree i[data-toggle="collapse"] {
+    cursor: pointer;
+    margin-top: 3px;
+    color: #777;
+    text-align: center;
+    font-size: 16px;
+}
+
+.tree i[data-toggle="collapse"]:hover {
+    color: #000;
 }

@@ -137,16 +137,20 @@
                     {% endif %}
                 {% endnevercache %}
 
-                <div class="col-sm-12 col-lg-6 col-lg-offset-6">
-                    {% block navbar_search_form %}{% search_form "all" %}{% endblock %}</div>
 
-                <div class="col-sm-12">
-                    <ul class="breadcrumb">
-                        {% spaceless %}
-                            {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-                        {% endspaceless %}
-                    </ul>
+                <div class="col-sm-12 col-lg-6 col-lg-offset-6">
+                    {% block navbar_search_form %}{% search_form "all" %}{% endblock %}
                 </div>
+
+                {% if not on_home %}
+                    <div class="col-sm-12">
+                        <ul class="breadcrumb">
+                            {% spaceless %}
+                                {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                            {% endspaceless %}
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

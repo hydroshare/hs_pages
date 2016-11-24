@@ -7,20 +7,22 @@
         <ul class="nav tree nav-list navlist-menu-level-{{ branch_level }}">
             {% for page in page_branch %}
                 {% if page.in_menu %}
-                    <li class="
-                        {% if page.is_current %} active{% endif %}
+                    <li class="{% if page.is_current %} active{% endif %}
                         {% if page.is_current_or_ascendant %} active-branch{% endif %}
                         " id="tree-menu-{{ page.html_id }}">
-                        <a {% if page.has_children_in_menu %}data-toggle="collapse"
-                           data-target="#collapse-{{ page.html_id }}"
-                               {% if not page.is_current_or_ascendant %}
-                           class="collapsed"
-                               {% endif %}>
-                               <i class="fa fa-chevron-right pull-right"></i>
-                           {% else %}
-                               href="{{ page.get_absolute_url }}">
-                           {% endif %}
-                           {{ page.title }}</a>
+                        <div class="tree-menu-item">
+                        <a href="{{ page.get_absolute_url }}"
+                            {% if page.has_children_in_menu %}
+                                {% if not page.is_current_or_ascendant %}
+                            class="collapsed"
+                                {% endif %}
+                            {% endif %}>{{ page.title }}</a>
+                        {% if page.has_children_in_menu %}
+                            <i data-toggle="collapse"
+                               data-target="#collapse-{{ page.html_id }}"
+                               class="fa fa-chevron-right pull-right"></i>
+                        {% endif %}
+                        </div>
                         {# wrap the next line with 'if page.is_current_or_ascendant' #}
                         {# to only show child pages in the menu for the current page #}
 
