@@ -1,45 +1,76 @@
-{% load i18n pages_tags %}
-
-{% spaceless %}
-{% if page_branch_in_menu %}
-
-{% for page in page_branch %}
-    {% if page.is_primary %}
-        {% if forloop.first %}
-            <div class="nav-footer">
-        {% endif %}
-        {% if page.in_menu %}
-            <ul class="list-unstyled">
-        {% endif %}
-    {% endif %}
-
-    {% if page.in_menu %}
-        {% if forloop.first and not page.parent.in_menu and not page.is_primary %}
-            <ul class="list-unstyled">
-        {% endif %}
-        <li {% if page.is_current_or_ascendant %}class="active"{% endif %}
-            id="footer-menu-{{ page.html_id }}">
-            <a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
-    {% endif %}
-
-    {% if page.in_menu and page.has_children_in_menu %}{% page_menu page %}{% endif %}
-
-    {% if page.in_menu %}
-        {% if forloop.first and not page.parent.in_menu and not page.is_primary %}
-            </li></ul>
-        {% endif %}
-    {% endif %}
-
-    {% if page.is_primary %}
-        {% if page.in_menu %}
-            </ul>
-        {% endif %}
-        {% if forloop.last %}
+<footer>
+    <div class="container">
+        <div class="row">
+            <!-- Contact Us
+            =================  -->
+            <div class="col-md-4 col-sm-4">
+                <div class="headline">
+                    <h3>Contact us</h3>
+                </div>
+                <div class="content">
+                    <p class="p1">Email us at <a href="mailto:support@hydroshare.org">hydroshare.org</a></p>
+                </div>
             </div>
-        {% endif %}
-    {% endif %}
+            <!-- Social icons
+            ===================== -->
+            <div class="col-md-4 col-sm-4">
 
-{% endfor %}
+                <div class="headline"><h3>Follow</h3></div>
 
-{% endif %}
-{% endspaceless %}
+                <div class="content social">
+                    <ul>
+                        <li>
+                            <a href="http://twitter.com/cuahsi " target="_blank"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="https://www.facebook.com/pages/CUAHSI-Consortium-of-Universities-for-the-Advancement-of-Hydrologic-Science-Inc/179921902590"
+                               target="_blank"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="http://www.youtube.com/user/CUAHSI" target="_blank"><i
+                                    class="fa fa-youtube"></i></a>
+                        </li>
+                        <li>
+                            <a href="http://github.com/hydroshare" target="_blank"><i class="fa fa-github"></i></a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/company/2632114" target="_blank"><i
+                                    class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <!-- Subscribe
+            =============== -->
+            <div class="col-md-4 col-sm-4">
+
+                <div class="headline"><h3>Open Source</h3></div>
+                <div class="content">
+                    <p class="p1">HydroShare is Open Source. Find us on <a
+                            href="https://github.com/hydroshare/"><strong>Github</strong></a>.</p>
+                    <p class="p1">Report a bug <strong><a
+                            href="https://github.com/hydroshare/hydroshare/issues?state=open">here</a></strong></p>
+                    <p class="p1">This is HydroShare Version<b>&nbsp;1.8.0</b></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Legal
+    ============= -->
+    <div class="legal">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>© 2016 CUAHSI. This material is based upon work supported by the National Science Foundation
+                        (NSF) under awards 1148453 and 1148090. Any opinions, findings, conclusions, or recommendations
+                        expressed in this material are those of the authors and do not necessarily reflect the views of
+                        the NSF. | <a href="/terms-of-use">Terms Of Use</a> | <a href="/privacy">Statement of
+                            Privacy</a> | <a href="/sitemap/">Site Map</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

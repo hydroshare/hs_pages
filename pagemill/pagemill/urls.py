@@ -53,7 +53,7 @@ urlpatterns += [
     # should be used if you want to customize the homepage's template.
     # NOTE: Don't forget to import the view function too!
 
-    url("^$", page, {"slug": "/"}, name="home"),
+    url("^$", direct_to_template, {"template": "index.html"}, name="home"),
 
     # HOMEPAGE FOR A BLOG-ONLY SITE
     # -----------------------------
