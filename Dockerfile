@@ -1,4 +1,4 @@
-FROM python:2.7.11
+FROM python:2.7
 MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
 
 # Install debian system packages / prerequisites
@@ -9,18 +9,12 @@ RUN apt-get update && apt-get install -y \
     openssh-server \
     rsync
 
-# Install mezzanine from source
-WORKDIR /usr/src
-RUN git clone https://github.com/stephenmcd/mezzanine.git
-WORKDIR /usr/src/mezzanine
-RUN git checkout 43036df0ff8be70e44d5116ea467f01432867108
-RUN python setup.py install
+COPY . /tmp
+RUN cp /tmp/requirements.txt /requirements.txt
 
 # Install pip packages
-RUN pip install --upgrade pip
-RUN pip install \
-    psycopg2==2.6.1 \
-    gunicorn==19.4.5
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
 
 # Install SSH for remote PyCharm debugging
 RUN mkdir /var/run/sshd
