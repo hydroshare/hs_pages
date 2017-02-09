@@ -7,7 +7,7 @@ filebrowser-safe==0.4.6
 future==0.16.0
 grappelli-safe==0.4.5
 gunicorn==19.6.0
-html5lib>=0.9999999,<0.99999999
+html5lib>=0.9999999,<0.99999999 # No module named sanitizer in latest version
 Mezzanine==4.2.2
 oauthlib==2.0.1
 olefile==0.44
