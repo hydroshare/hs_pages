@@ -2,4 +2,4 @@
 
 sleep 3s
 /usr/sbin/sshd
-python manage.py runserver 0.0.0.0:8000
+/usr/bin/env bash run-server

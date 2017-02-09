@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     postgresql-client-9.4 \
     openssh-client \
     openssh-server \
+    supervisor \
     rsync
 
 COPY . /tmp
