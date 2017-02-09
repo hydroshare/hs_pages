@@ -1,3 +1,8 @@
 # hs_pages
 
-Vanilla Mezzanine 4.1.0 server (Django 1.9.5)
+Help pages based on Mezzanine / Django
+
+### requires.io
+
+[![Requirements Status](https://requires.io/github/hydroshare/hs_pages/requirements.svg?branch=add-requirements-file)](https://requires.io/github/hydroshare/hs_pages/requirements/?branch=develop)
+
