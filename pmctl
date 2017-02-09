@@ -11,8 +11,8 @@ LOCAL_ENV_FILE='local-env.sh'
 HOME_DIR=${PWD}
 
 ### Pre-flight Variables ###
-DEV_SERVER='python manage.py runserver 0.0.0.0:8000'
-PROD_SERVER='source gunicorn_start'
+DEV_SERVER='runuser -p -u root -g root /usr/bin/env bash run-server'
+PROD_SERVER='/usr/bin/env bash run-server'
 
 # Read pagemill-config.yaml into environment
 cd $CONFIG_DIRECTORY
@@ -105,14 +105,16 @@ preflight_pagemill() {
         fi
         echo "*** INFO: Using gunicorn ***"
         # use production server to run pagemill
-        sed -i 's/'"${DEV_SERVER}"'/'"${PROD_SERVER}"'/g' ${PAGEMILL_PATH}/init-web
+        sed -i 's!\<'"${DEV_SERVER}"'\>!'"${PROD_SERVER}"'!g' ${PAGEMILL_PATH}/init-web
+        cp -rf ${PAGEMILL_PATH}/deploy/run-prod-server ${PAGEMILL_PATH}/run-server
     else
         echo "*** INFO: Not using Nginx ***"
         echo "*** INFO: Using Django runserver ***"
         # use development server to run pagemill
-        sed -i 's/'"${PROD_SERVER}"'/'"${DEV_SERVER}"'/g' ${PAGEMILL_PATH}/init-web
+        sed -i 's!\<'"${PROD_SERVER}"'\>!'"${DEV_SERVER}"'!g' ${PAGEMILL_PATH}/init-web
         # enable SSH server for debugging purposes
         sed -i 's!'"# REMOVED SSH COMPONENT"'!'"/usr/sbin/sshd"'!g' ${PAGEMILL_PATH}/init-web
+        cp -rf ${PAGEMILL_PATH}/deploy/run-dev-server ${PAGEMILL_PATH}/run-server
     fi
 }
 
