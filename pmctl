@@ -131,8 +131,8 @@ run_pagemill() {
 
 backup_pagemill() {
     echo "*** BACKUP DATABASE, MEDIA AND SETTINGS FILES ***"
-    docker exec pagemill-web /usr/bin/pg_dump -c -d postgres -U postgres -h db \
-        > "${PAGEMILL_PATH}/pg.pagemill-`date +"%m-%d-%y"`.sql"
+    docker exec -u postgres pagemill-db pg_dumpall | dd status=none \
+        of="${PAGEMILL_PATH}/pg.pagemill-`date +"%m-%d-%y"`.sql"
     if [ ! -d "${PAGEMILL_PATH}/media_files" ]; then
         mkdir ${PAGEMILL_PATH}/media_files;
     fi
