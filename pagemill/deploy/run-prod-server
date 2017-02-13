@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cp /home/docker/pagemill/deploy/pagemill.conf /etc/supervisor/conf.d/pagemill.conf
+/usr/bin/supervisord -n

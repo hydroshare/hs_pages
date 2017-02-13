@@ -13,7 +13,8 @@ NUM_WORKERS=$(python -c "exec(\"import multiprocessing\nprint( multiprocessing.c
 DJANGO_SETTINGS_MODULE=pagemill.settings        # which settings file should Django use
 DJANGO_WSGI_MODULE=pagemill.wsgi                # WSGI module name
 GUNICORN_LOG=/var/log/pagemill/gunicorn.log     # path to logfile
-TIMEOUT_PERIOD=300                              # timeout period in seconds
+TIMEOUT_PERIOD=30                               # timeout period in seconds
+MAX_REQUESTS=1000                               # maximum number of requests a worker will process before restarting
 
 ### Do not edit below this line ###
 echo "Starting $NAME as `whoami`"
@@ -32,4 +33,5 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
   --bind=unix:$SOCKFILE \
   --log-level=debug \
   --log-file=$GUNICORN_LOG \
-  --timeout=$TIMEOUT_PERIOD
+  --timeout=$TIMEOUT_PERIOD \
+  --max-requests $MAX_REQUESTS
