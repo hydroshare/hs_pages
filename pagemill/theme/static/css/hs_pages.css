@@ -112,6 +112,11 @@ body > .main-container {
     -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
 }
 
+.navbar-nav > li > a {
+    color: #777;
+    font: 13px/18px 'Open Sans',arial,sans-serif;
+}
+
 #profile-menu .dropdown-footer {
     position: absolute;
     bottom: 20px;
@@ -464,4 +469,8 @@ p.panel-body {
 
 form[role="search"] .form-group {
     display: inline-block;
+}
+
+#img-brand-logo {
+    width: 145px;
 }
