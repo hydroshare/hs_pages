@@ -3,15 +3,17 @@ MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
 
 # Install debian system packages / prerequisites
 RUN apt-get update && apt-get install -y \
-    postgresql-9.4 \
-    postgresql-client-9.4 \
+    postgresql-9.6 \
+    postgresql-client-9.6 \
     openssh-client \
     openssh-server \
     supervisor \
     rsync
 
-COPY . /tmp
-RUN cp /tmp/requirements.txt /requirements.txt
+# For local development?
+# COPY . /tmp
+# RUN cp /tmp/requirements.txt /requirements.txt
+COPY ./requirements.txt /requirements.txt
 
 # Install pip packages
 RUN pip install --upgrade pip \

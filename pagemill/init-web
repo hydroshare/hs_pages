@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
 sleep 3s
-/usr/sbin/sshd
+# For local development?
+# /usr/sbin/sshd
 /usr/bin/env bash run-server

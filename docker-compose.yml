@@ -1,6 +1,6 @@
 db:
   container_name: pagemill-db
-  image: postgres:9.4
+  image: postgres:9.6
 web:
   container_name: pagemill-web
   build: .

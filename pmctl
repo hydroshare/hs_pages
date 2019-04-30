@@ -22,6 +22,15 @@ sed -i '/^\s*$/d' $LOCAL_ENV_FILE
 while read line; do export $line; done < <(cat $LOCAL_ENV_FILE)
 cd $HOME_DIR
 
+# Create the media path before the container is run
+cd ${PAGEMILL_PATH}
+if [ ! -d "static/media" ]; then
+    mkdir -p static/media;
+fi
+cp -r media_files/media static/
+cd -
+
+
 display_usage() {
     echo "*** USAGE ***"
     echo " - TODO:"
@@ -52,6 +61,8 @@ start_nginx() {
     echo "*** START NGINX ***"
     if [[ ! -n "$(docker-compose ps | grep nginx | grep Up)" ]]; then
         echo "*** INFO: nginx is not running, waiting ***"
+        docker-compose start nginx
+        sleep 3
     fi
     if [[ $USE_NGINX = 'true' ]]; then
         if [[ $USE_SSL = 'true' ]]; then
@@ -124,7 +135,14 @@ build_pagemill() {
 }
 
 run_pagemill() {
-    echo "*** RUN ***"
+    echo "*** RUN ***" 
+    # Create the media path before the container is run
+    cd ${PAGEMILL_PATH}
+    if [ ! -d "static/media" ]; then
+        mkdir -p static/media;
+    fi
+    cp -r media_files/media static/
+    cd -
     preflight_pagemill
     docker-compose up -d
 }
@@ -206,8 +224,8 @@ loadmedia_pagemill() {
     echo "*** LOAD MEDIA FILES ***"
     cd ${PAGEMILL_PATH}
     tar -xzvf ${PAGEMILL_MEDIA_FILES}
-    if [ ! -d "${PAGEMILL_PATH}/static" ]; then
-        mkdir ${PAGEMILL_PATH}/static;
+    if [ ! -d "static/media" ]; then
+        mkdir -p static/media;
     fi
     cp -r media_files/media static/
     cd -
