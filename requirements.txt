@@ -11,7 +11,7 @@ html5lib>=0.9999999,<0.99999999 # No module named sanitizer in latest version
 Mezzanine==4.2.2
 oauthlib==2.0.1
 olefile==0.44
-Pillow==4.0.0
+Pillow==8.2.0
 psycopg2==2.6.2
 pytz==2016.10
 requests==2.13.0
