@@ -4,7 +4,7 @@ MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
 # Install debian system packages / prerequisites
 RUN apt-get update && apt-get install -y \
     postgresql-9.4 \
-    postgresql-client-9.4 \
+    postgresql-client \
     openssh-client \
     openssh-server \
     supervisor \

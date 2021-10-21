@@ -1,6 +1,11 @@
 db:
   container_name: pagemill-db
   image: postgres:9.4
+
+  environment:
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: "postgres"
+    POSTGRES_DB: "postgres"
 web:
   container_name: pagemill-web
   build: .
