@@ -195,9 +195,9 @@ loaddb_pagemill() {
     # Uncomment to resolve: database "postgres" is being accessed by other users
 #    docker exec pagemill-web psql -U postgres -h db -c \
 #        "select pg_terminate_backend(pid) from pg_stat_activity where datname='postgres';"
-    docker exec pagemill-web dropdb -U postgres -h db postgres
-    docker exec pagemill-web createdb -U postgres -h db postgres --encoding UNICODE --template=template0
-    docker exec pagemill-web psql -U postgres -h db -f ${PAGEMILL_DATABASE} --quiet
+    #docker exec pagemill-web dropdb -U postgres -W postgres -p postgres -h db postgres
+    #docker exec pagemill-web createdb -U postgres -W postgres -h db postgres --encoding UNICODE --template=template0
+    #docker exec pagemill-web psql -U postgres -W postgres -h db -f ${PAGEMILL_DATABASE} --quiet
     docker exec pagemill-web python manage.py collectstatic --no-input
     docker exec pagemill-web python manage.py migrate
 }
