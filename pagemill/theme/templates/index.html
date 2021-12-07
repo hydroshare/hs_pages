@@ -4,215 +4,155 @@
 {% block meta_title %}HydroShare Support{% endblock %}
 
 {% block banner %}
-    <div id="home-parallax" class="parallax-window" data-parallax="scroll" data-image-src="{{ STATIC_URL }}img/bg3.jpg">
-    </div>
+<div id="home-parallax" class="parallax-window" data-parallax="scroll" data-image-src="{{ STATIC_URL }}img/bg3.jpg">
+</div>
 
-    <div id="greetings" class="text-center col-sm-12">
-        <div class="">
-            <h2>Welcome to HydroShare</h2>
-            <h4>Use the links below to learn how to begin sharing and collaborating.</h4>
-            <br>
-        </div>
-    </div>
+<div id="greetings" class="text-center col-sm-12">
+  <div class="">
+    <h1>Welcome to HydroShare</h1>
+    <h3>Use the links below to learn how to begin sharing and collaborating</h3>
+    <br>
+  </div>
+</div>
 {% endblock %}
 
 {% block main %}
-    <div class="col-sm-12 col-lg-8 col-lg-offset-2">
-        <h1 class="page-title">HydroShare Support</h1>
-        <h5>Get quick answers to the most common questions about how to get started with and use
-            HydroShare.</h5>
+<div class="col-sm-12">
+  <h1 class="page-title">HydroShare Support</h1>
+  <h5>Get quick answers to the most common questions about how to get started with and use
+    HydroShare.</h5>
+  <br>
+</div>
+<div class="col-sm-12">
+  <div id="help-topics-grid">
+    <a href="/introduction-to-hydroshare" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-book fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>Introduction to HydroShare</div>
         <br>
-    </div>
-    <div class="col-sm-12 col-lg-8 col-lg-offset-2">
-        <div class="row">
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/introduction-to-hydroshare">
-                        <div class="text-center">
-                            <i class="fa fa-book fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>Introduction to HydroShare</div>
-                                <br>
-                                <small>Learn more about what you can do with HydroShare</small>
-                            </div>
+        <small>Learn more about what you can do with HydroShare</small>
+      </div>
+    </a>
 
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/hydroshare-resources" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-file-alt fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>HydroShare Resources</div>
+        <br>
+        <small>Learn more about how content is stored and described in HydroShare</small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/hydroshare-resources">
-                        <div class="text-center">
-                            <i class="fa fa-file-text fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>HydroShare Resources</div>
-                                <br>
-                                <small>Learn more about how content is stored and described in HydroShare</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/creating-and-managing-resources" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-database fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>Creating and Managing Resources</div>
+        <br>
+        <small>Create new datasets and models and describe with metadata</small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/creating-and-managing-resources">
-                        <div class="text-center">
-                            <i class="fa fa-database fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>Creating and Managing Resources</div>
-                                <br>
-                                <small>Create new datasets and models and describe with metadata</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/sharing-and-privacy" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-share-square fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>Sharing and Privacy</div>
+        <br>
+        <small>Share resources with your colleagues, control who has access, and learn how to
+          formally publish
+        </small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/sharing-and-privacy">
-                        <div class="text-center">
-                            <i class="fa fa-share-square-o fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>Sharing and Privacy</div>
-                                <br>
-                                <small>Share resources with your colleagues, control who has access, and learn how to
-                                    formally publish
-                                </small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/participation-and-collaboration" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-users fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>Participation and Collaboration</div>
+        <br>
+        <small>Create user groups and collaborate with your colleagues</small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/discovering-resources">
-                        <div class="text-center">
-                            <i class="fa fa-search fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>Discovering Resources</div>
-                                <br>
-                                <small>Discover datasets and models shared by others</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/publishing-in-hydroshare" class="help-topic-card">
+      <div class="topic-header">
+        {% comment %} <i class="fas fa-feather-alt fa-5x" aria-hidden="true"></i> {% endcomment %}
+        <span class="fa-stack fa-3x" style="vertical-align: top;">
+          <i class="far fa-square fa-stack-2x"></i>
+          <i class="fas fa-feather-alt fa-stack-1x fa-inverse"></i>
+        </span>
+      </div>
+      <div class="topic-body">
+        <div>Publishing in HydroShare</div>
+        <br>
+        <small>Learn about formally publishing data and receiving a Digital Object Identifier, as well as publishing best practices.
+        </small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/participation-and-collaboration">
-                        <div class="text-center">
-                            <i class="fa fa-users fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>Participation and Collaboration</div>
-                                <br>
-                                <small>Create user groups and collaborate with your colleagues</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/discovering-resources" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-search fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>Discovering Resources</div>
+        <br>
+        <small>Discover datasets and models shared by others</small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/apps">
-                        <div class="text-center">
-                            <i class="fa fa-window-maximize fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>Apps</div>
-                                <br>
-                                <small>Interact with your resources using web apps for visualization and analysis
-                                </small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/apps" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-window-maximize fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>Apps</div>
+        <br>
+        <small>Interact with your resources using web apps for visualization and analysis
+        </small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/modeling">
-                        <div class="text-center">
-                            <i class="fa fa-sitemap fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>Modeling</div>
-                                <br>
-                                <small>Upload your models, share inputs and outputs, and execute them online</small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+    <a href="/modeling" class="help-topic-card">
+      <div class="topic-header">
+        <i class="fas fa-sitemap fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>Modeling</div>
+        <br>
+        <small>Upload your models, share inputs and outputs, and execute them online</small>
+      </div>
+    </a>
 
-            <div class="col-lg-4 col-sm-6 col-xs-12">
-                <div data-topic="" class="help-topic-thumbnail">
-                    <a href="/about-hydroshare">
-                        <div class="text-center">
-                            <i class="fa fa-question-circle-o fa-4x topic-icon" aria-hidden="true"></i>
-                            <div class="topic-name">
-                                <div>About HydroShare</div>
-                                <br>
-                                <small>Learn more about design of the HydroShare system, source code, and architecture
-                                </small>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <a href="/about-hydroshare" class="help-topic-card">
+      <div class="topic-header">
+        <i class="far fa-question-circle fa-5x" aria-hidden="true"></i>
+      </div>
+      <div class="topic-body">
+        <div>About HydroShare</div>
+        <br>
+        <small>Learn more about design of the HydroShare system, source code, and architecture
+        </small>
+      </div>
+    </a>
+  </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static "js/parallax.js" %}"></script>
+<script src="{% static 'js/parallax.js' %}"></script>
 
-    <script>
-        // Makes all topic item containers have the same height.
-        function fixViewPort(current) {
-            if (!current) {
-                return;
-            }
-
-            var containers = $('.help-topic-thumbnail');
-            containers.height("initial");   // Reset height
-
-            var containerMaxHeight = 0;
-            var nameMaxHeight = 0;
-            for (var i = 0; i < containers.length; i++) {
-                containerMaxHeight = Math.max($(containers[i]).height(), containerMaxHeight);
-                nameMaxHeight = Math.max($(containers[i]).find(".topic-name").height(), nameMaxHeight);
-
-            }
-
-            // set to new max height
-            for (var i = 0; i < containers.length; i++) {
-                $(containers[i]).height(containerMaxHeight);
-                $(containers[i]).find(".topic-name").height(nameMaxHeight)
-            }
-        }
-
-        // Uses bootstrap toolkit to trigger FixViewPort on bootstrap responsive breakpoints
-        (function ($, viewport) {
-            $(document).ready(function () {
-                // Executes when page loads
-                fixViewPort(viewport.current());
-
-                // Executes each time window size changes
-                $(window).resize(
-                        viewport.changed(function () {
-                            fixViewPort(viewport.current());
-                        })
-                );
-            });
-        })(jQuery, ResponsiveBootstrapToolkit);
-
-        $(document).ready(function () {
-            $('.parallax-window').parallax();
-        });
-    </script>
+<script>
+  $(document).ready(function () {
+    $('.parallax-window').parallax();
+  });
+</script>
 {% endblock %}
