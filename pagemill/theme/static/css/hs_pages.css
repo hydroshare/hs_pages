@@ -17,6 +17,10 @@ body > .main-container {
   flex-wrap: wrap;
 }
 
+.form-search-container > form > div.form-group:nth-child(2) {
+  display: none;
+}
+
 .help-topic-card {
   transition: background-color 0.5s ease, border 0.5s ease;
   border: 1px solid #4bb5c1;
