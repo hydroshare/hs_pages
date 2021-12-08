@@ -9,7 +9,7 @@ Help pages based on Mezzanine / Django
 ## How to run
   Clone this repository.
 
-  Using a the console cd into `hs_pages` folder (or whatever name you chose when cloning it).
+  Using the console, cd into `hs_pages` folder (or whatever name you chose when cloning it).
 
   Run `./pmctl deploy_dev`.
 
