@@ -1,6 +1,7 @@
 db:
   container_name: pagemill-db
   image: postgres:9.4
+  restart: unless-stopped
 web:
   container_name: pagemill-web
   build: .
