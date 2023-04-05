@@ -19,6 +19,7 @@ web:
   links:
     - db:db
   command: /bin/bash init-web
+  restart: unless-stopped
 nginx:
   container_name: pagemill-nginx
   image: nginx:1.9
@@ -31,3 +32,5 @@ nginx:
     - "443:443"
   links:
     - web:web
+  restart: unless-stopped
+  
