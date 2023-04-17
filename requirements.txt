@@ -4,7 +4,7 @@ chardet==2.3.0
 Django==1.10.5
 django-contrib-comments==1.8.0
 filebrowser-safe==0.4.6
-future==0.16.0
+future==0.18.3
 grappelli-safe==0.4.5
 gunicorn==19.6.0
 html5lib>=0.9999999,<0.99999999 # No module named sanitizer in latest version
