@@ -14,7 +14,7 @@ olefile==0.44
 Pillow==4.0.0
 psycopg2==2.6.2
 pytz==2016.10
-requests==2.13.0
+requests==2.31.0
 requests-oauthlib==0.7.0
 six==1.10.0
 tzlocal==1.3
