@@ -6,11 +6,4 @@ PAGEMILL_PATH: pagemill
 PAGEMILL_DATABASE: pg.pagemill-testing.sql
 PAGEMILL_MEDIA_FILES: media.pagemill-testing.tar.gz
 
-### Nginx configuration ###
-USE_NGINX: false
-USE_SSL: false
-NGINX_DIR: nginx
-SSL_CERT_FILE: pagemill-testing.crt
-SSL_KEY_FILE: pagemill-testing.key
-
 ### REQUIRES BLANK LINE AFTER LAST VARIABLE DEFINITION ###

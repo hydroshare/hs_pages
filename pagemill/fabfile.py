@@ -55,7 +55,7 @@ env.venv_path = join(env.venv_home, env.proj_name)
 env.proj_path = "/home/%s/mezzanine/%s" % (env.user, env.proj_name)
 env.manage = "%s/bin/python %s/manage.py" % (env.venv_path, env.proj_path)
 env.domains = conf.get("DOMAINS", [conf.get("LIVE_HOSTNAME", env.hosts[0])])
-env.domains_nginx = " ".join(env.domains)
+# env.domains_nginx = " ".join(env.domains)
 env.domains_regex = "|".join(env.domains)
 env.domains_python = ", ".join(["'%s'" % s for s in env.domains])
 env.ssl_disabled = "#" if len(env.domains) > 1 else ""
@@ -85,11 +85,6 @@ else:
 # also run.
 
 templates = {
-    "nginx": {
-        "local_path": "deploy/nginx.conf.template",
-        "remote_path": "/etc/nginx/sites-enabled/%(proj_name)s.conf",
-        "reload_command": "service nginx restart",
-    },
     "supervisor": {
         "local_path": "deploy/supervisor.conf.template",
         "remote_path": "/etc/supervisor/conf.d/%(proj_name)s.conf",
@@ -326,6 +321,7 @@ def pip(packages):
 
 
 def postgres(command):
+    # TODO: sqlite3
     """
     Runs the given command as the postgres user.
     """
@@ -346,6 +342,7 @@ def psql(sql, show=True):
 
 @task
 def backup(filename):
+    # TODO: sqlite3
     """
     Backs up the project database.
     """
@@ -361,6 +358,7 @@ def backup(filename):
 
 @task
 def restore(filename):
+    # TODO: sqlite3
     """
     Restores the project database from a previous backup.
     """
@@ -435,8 +433,8 @@ def install():
     """
     # Install system requirements
     sudo("apt-get update -y -q")
-    apt("nginx libjpeg-dev python-dev python-setuptools git-core "
-        "postgresql libpq-dev memcached supervisor python-pip")
+    apt("libjpeg-dev python-dev python-setuptools git-core "
+        "sqlite3 libpq-dev memcached supervisor python-pip")
     run("mkdir -p /home/%s/logs" % env.user)
 
     # Install Python requirements
@@ -499,26 +497,6 @@ def create():
     psql("CREATE DATABASE %s WITH OWNER %s ENCODING = 'UTF8' "
          "LC_CTYPE = '%s' LC_COLLATE = '%s' TEMPLATE template0;" %
          (env.proj_name, env.proj_name, env.locale, env.locale))
-
-    # Set up SSL certificate
-    if not env.ssl_disabled:
-        conf_path = "/etc/nginx/conf"
-        if not exists(conf_path):
-            sudo("mkdir %s" % conf_path)
-        with cd(conf_path):
-            crt_file = env.proj_name + ".crt"
-            key_file = env.proj_name + ".key"
-            if not exists(crt_file) and not exists(key_file):
-                try:
-                    crt_local, = glob(join("deploy", "*.crt"))
-                    key_local, = glob(join("deploy", "*.key"))
-                except ValueError:
-                    parts = (crt_file, key_file, env.domains[0])
-                    sudo("openssl req -new -x509 -nodes -out %s -keyout %s "
-                         "-subj '/CN=%s' -days 3650" % parts)
-                else:
-                    upload_template(crt_local, crt_file, use_sudo=True)
-                    upload_template(key_local, key_file, use_sudo=True)
 
     # Install project-specific requirements
     upload_template_and_reload("settings")

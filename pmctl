@@ -48,74 +48,22 @@ remove_pagemill() {
     docker-compose rm -f
 }
 
-start_nginx() {
-    echo "*** START NGINX ***"
-    if [[ ! -n "$(docker-compose ps | grep nginx | grep Up)" ]]; then
-        echo "*** INFO: nginx is not running, waiting ***"
-    fi
-    if [[ $USE_NGINX = 'true' ]]; then
-        if [[ $USE_SSL = 'true' ]]; then
-            echo "*** INFO: Using pagemill-nginx-ssl.conf ***"
-            NGINX_CONF_FILE=pagemill-nginx-ssl.conf
-        else
-            echo "*** INFO: Using pagemill-nginx.conf ***"
-            NGINX_CONF_FILE=pagemill-nginx.conf
-        fi
-        export NGINX_CONF_FILE=$NGINX_CONF_FILE
-        cd pagemill
-            ./init-nginx
-        cd ../
-    else
-        echo "*** INFO: Not using Nginx ***"
-        docker-compose stop nginx
-    fi
-}
-
-stop_nginx() {
-    echo "*** STOP NGINX ***"
-    if [[ -n "$(docker-compose ps | grep nginx | grep Up)" ]]; then
-        echo "*** INFO: Stopping Nginx now ***"
-        docker-compose stop nginx
-    else
-        echo "*** INFO: Nginx is not running ***"
-    fi
-}
-
 restart_pagemill() {
     echo "*** RESTART ***"
     stop_pagemill
     preflight_pagemill
     start_pagemill
-    start_nginx
 }
 
 preflight_pagemill() {
     echo "*** PREFLIGHT ***";
     echo $PAGEMILL_PATH
-    if [[ $USE_NGINX = 'true' ]]; then
-        echo "*** INFO: Using Nginx ***"
-        if [[ $USE_SSL = 'true' ]]; then
-            echo "*** INFO: Using SSL ***"
-            # disable SSH server from running
-            sed -i 's!'"/usr/sbin/sshd"'!'"# REMOVED SSH COMPONENT"'!g' ${PAGEMILL_PATH}/init-web
-        else
-            echo "*** INFO: Not using SSL ***"
-            # enable SSH server for debugging purposes
-            sed -i 's!'"# REMOVED SSH COMPONENT"'!'"/usr/sbin/sshd"'!g' ${PAGEMILL_PATH}/init-web
-        fi
-        echo "*** INFO: Using gunicorn ***"
-        # use production server to run pagemill
-        sed -i 's!\<'"${DEV_SERVER}"'\>!'"${PROD_SERVER}"'!g' ${PAGEMILL_PATH}/init-web
-        cp -rf ${PAGEMILL_PATH}/deploy/run-prod-server ${PAGEMILL_PATH}/run-server
-    else
-        echo "*** INFO: Not using Nginx ***"
-        echo "*** INFO: Using Django runserver ***"
-        # use development server to run pagemill
-        sed -i 's!\<'"${PROD_SERVER}"'\>!'"${DEV_SERVER}"'!g' ${PAGEMILL_PATH}/init-web
-        # enable SSH server for debugging purposes
-        sed -i 's!'"# REMOVED SSH COMPONENT"'!'"/usr/sbin/sshd"'!g' ${PAGEMILL_PATH}/init-web
-        cp -rf ${PAGEMILL_PATH}/deploy/run-dev-server ${PAGEMILL_PATH}/run-server
-    fi
+    echo "*** INFO: Using Django runserver ***"
+    # use development server to run pagemill
+    sed -i 's!\<'"${PROD_SERVER}"'\>!'"${DEV_SERVER}"'!g' ${PAGEMILL_PATH}/init-web
+    # enable SSH server for debugging purposes
+    sed -i 's!'"# REMOVED SSH COMPONENT"'!'"/usr/sbin/sshd"'!g' ${PAGEMILL_PATH}/init-web
+    cp -rf ${PAGEMILL_PATH}/deploy/run-dev-server ${PAGEMILL_PATH}/run-server
 }
 
 build_pagemill() {
@@ -131,8 +79,9 @@ run_pagemill() {
 
 backup_pagemill() {
     echo "*** BACKUP DATABASE, MEDIA AND SETTINGS FILES ***"
-    docker exec -u postgres pagemill-db pg_dumpall | dd status=none \
-        of="${PAGEMILL_PATH}/pg.pagemill-`date +"%m-%d-%y"`.sql"
+    # TODO: sqlite3
+    # docker exec -u postgres pagemill-db pg_dumpall | dd status=none \
+    #     of="${PAGEMILL_PATH}/pg.pagemill-`date +"%m-%d-%y"`.sql"
     if [ ! -d "${PAGEMILL_PATH}/media_files" ]; then
         mkdir ${PAGEMILL_PATH}/media_files;
     fi
@@ -190,14 +139,12 @@ restore_pagemill() {
         ${PAGEMILL_PATH}/${PAGEMILL_MEDIA_FILES}
 }
 
+# TODO: sqlite3
 loaddb_pagemill() {
     echo "*** LOAD DATABASE ***"
-    # Uncomment to resolve: database "postgres" is being accessed by other users
-#    docker exec pagemill-web psql -U postgres -h db -c \
-#        "select pg_terminate_backend(pid) from pg_stat_activity where datname='postgres';"
-    docker exec pagemill-web dropdb -U postgres -h db postgres
-    docker exec pagemill-web createdb -U postgres -h db postgres --encoding UNICODE --template=template0
-    docker exec pagemill-web psql -U postgres -h db -f ${PAGEMILL_DATABASE} --quiet
+    # docker exec pagemill-web dropdb -U postgres -h db postgres
+    # docker exec pagemill-web createdb -U postgres -h db postgres --encoding UNICODE --template=template0
+    # docker exec pagemill-web psql -U postgres -h db -f ${PAGEMILL_DATABASE} --quiet
     docker exec pagemill-web python manage.py collectstatic --no-input
     docker exec pagemill-web python manage.py migrate
 }
@@ -222,7 +169,6 @@ deploy_pagemill_nodb() {
         echo -ne "$pc ...\033[0K\r"
         sleep 1
     done
-    start_nginx
     docker exec pagemill-web python manage.py collectstatic --no-input
     docker exec pagemill-web python manage.py migrate
 }
@@ -237,7 +183,6 @@ deploy_dev_pagemill() {
         echo -ne "$pc ...\033[0K\r"
         sleep 1
     done
-    start_nginx
     loaddb_pagemill
     loadmedia_pagemill
 }
@@ -253,7 +198,6 @@ deploy_prod_pagemill() {
         echo -ne "$pc ...\033[0K\r"
         sleep 1
     done
-    start_nginx
     loaddb_pagemill
     loadmedia_pagemill
 }
@@ -292,10 +236,6 @@ case "$1" in
     remove) remove_pagemill $1
         ;;
     preflight) preflight_pagemill $1
-        ;;
-    start_nginx) start_nginx $1
-        ;;
-    stop_nginx) stop_nginx $1
         ;;
     *) display_usage
         ;;
