@@ -7,7 +7,6 @@ import sys
 from contextlib import contextmanager
 from functools import wraps
 from getpass import getpass, getuser
-from glob import glob
 from importlib import import_module
 from posixpath import join
 
@@ -133,12 +132,14 @@ def project():
 
 @contextmanager
 def update_changed_requirements():
+    def get_reqs():
+        return run("cat %s" % reqs_path, show=False)
+
     """
     Checks for changes in the requirements file across an update,
     and gets new requirements if changes have occurred.
     """
     reqs_path = join(env.proj_path, env.reqs_path)
-    get_reqs = lambda: run("cat %s" % reqs_path, show=False)
     old_reqs = get_reqs() if env.reqs_path else ""
     yield
     if old_reqs:
@@ -217,6 +218,10 @@ def get_templates():
     return injected
 
 
+def clean(s):
+    return s.replace("\n", "").replace("\r", "").strip()
+
+
 def upload_template_and_reload(name):
     """
     Uploads a template only if it has changed, and if so, reload the
@@ -242,7 +247,6 @@ def upload_template_and_reload(name):
         if "%(db_pass)s" in local_data:
             env.db_pass = db_pass()
         local_data %= env
-    clean = lambda s: s.replace("\n", "").replace("\r", "").strip()
     if clean(remote_data) == clean(local_data):
         return
     upload_template(local_path, remote_path, env, use_sudo=True, backup=False)
@@ -591,9 +595,9 @@ def deploy():
     if env.deploy_tool in env.vcs_tools:
         with cd(env.repo_path):
             if env.deploy_tool == "git":
-                    run("git rev-parse HEAD > %s/last.commit" % env.proj_path)
+                run("git rev-parse HEAD > %s/last.commit" % env.proj_path)
             elif env.deploy_tool == "hg":
-                    run("hg id -i > last.commit")
+                run("hg id -i > last.commit")
         with project():
             static_dir = static()
             if exists(static_dir):
@@ -634,10 +638,10 @@ def rollback():
         if env.deploy_tool in env.vcs_tools:
             with cd(env.repo_path):
                 if env.deploy_tool == "git":
-                        run("GIT_WORK_TREE={0} git checkout -f "
-                            "`cat {0}/last.commit`".format(env.proj_path))
+                    run("GIT_WORK_TREE={0} git checkout -f "
+                        "`cat {0}/last.commit`".format(env.proj_path))
                 elif env.deploy_tool == "hg":
-                        run("hg update -C `cat last.commit`")
+                    run("hg update -C `cat last.commit`")
             with project():
                 with cd(join(static(), "..")):
                     run("tar -xf %s/static.tar" % env.proj_path)
