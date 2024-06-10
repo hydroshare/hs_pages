@@ -1,5 +1,11 @@
-FROM python:2.7
+FROM python:3.9-buster
 MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
+
+RUN apt-get update && \
+    apt-get install -y lsb-release curl ca-certificates && \
+    install -d /usr/share/postgresql-common/pgdg && \
+    curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
+    sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
 # Install debian system packages / prerequisites
 RUN apt-get update && apt-get install -y \

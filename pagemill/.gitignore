@@ -8,5 +8,6 @@ local-env.sh
 init-web
 /log
 /static
+/media
 /media_files
 media.pagemill-testing.tar.gz

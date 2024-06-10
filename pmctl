@@ -41,8 +41,8 @@ remove_pagemill() {
     echo "*** REMOVE ***"
     # if web is running remove the static directory
     if [[ -n "$(docker-compose ps | grep web | grep Up)" ]]; then
-        echo "*** INFO: Remove /static directory ***"
-        docker exec pagemill-web rm -rf static
+        echo "*** INFO: Remove /static and /media directory ***"
+        docker exec pagemill-web rm -rf static media
     fi
     stop_pagemill
     docker-compose rm -f
@@ -83,9 +83,9 @@ backup_pagemill() {
     if [ ! -d "${PAGEMILL_PATH}/media_files" ]; then
         mkdir ${PAGEMILL_PATH}/media_files;
     fi
-    docker exec pagemill-web rsync -avh --dry-run /home/docker/pagemill/static/media \
+    docker exec pagemill-web rsync -avh --dry-run /home/docker/pagemill/media \
         /home/docker/pagemill/media_files
-    docker exec pagemill-web rsync -avh /home/docker/pagemill/static/media \
+    docker exec pagemill-web rsync -avh /home/docker/pagemill/media \
         /home/docker/pagemill/media_files
     cd ${PAGEMILL_PATH}
     tar -czvf "media.pagemill-`date +"%m-%d-%y"`.tar.gz" media_files
@@ -154,7 +154,10 @@ loadmedia_pagemill() {
     if [ ! -d "${PAGEMILL_PATH}/static" ]; then
         mkdir ${PAGEMILL_PATH}/static;
     fi
-    cp -r media_files/media static/
+        if [ ! -d "${PAGEMILL_PATH}/media" ]; then
+        mkdir ${PAGEMILL_PATH}/media;
+    fi
+    cp -r media_files/media media/
     cd -
 }
 
