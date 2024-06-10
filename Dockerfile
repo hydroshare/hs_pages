@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:3.9-buster
 MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
 
 RUN apt-get update && \
