@@ -19,6 +19,8 @@ RUN mkdir -p /var/log/pagemill
 
 WORKDIR /home/docker/pagemill
 RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate --noinput --fake-initial
+RUN python manage.py loaddata pagemill-fixtures.json
 
 # Cleanup
 RUN apt-get clean
