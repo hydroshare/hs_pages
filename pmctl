@@ -79,9 +79,7 @@ run_pagemill() {
 
 backup_pagemill() {
     echo "*** BACKUP DATABASE, MEDIA AND SETTINGS FILES ***"
-    # TODO: sqlite3
-    # docker exec -u postgres pagemill-db pg_dumpall | dd status=none \
-    #     of="${PAGEMILL_PATH}/pg.pagemill-`date +"%m-%d-%y"`.sql"
+    docker exec pagemill-web python manage.py dumpdata > "pagemill-fixtures-`date +"%m-%d-%y"`.json"
     if [ ! -d "${PAGEMILL_PATH}/media_files" ]; then
         mkdir ${PAGEMILL_PATH}/media_files;
     fi
@@ -110,8 +108,8 @@ backup_pagemill() {
     cp ${HOME_DIR}/docker-compose.yml \
         /home/${USER}/pagemill-backup/docker-compose.yml
     # backup database
-    cp ${PAGEMILL_PATH}/pg.pagemill-`date +"%m-%d-%y"`.sql \
-        /home/${USER}/pagemill-backup/pg.pagemill-`date +"%m-%d-%y"`.sql
+    cp ${PAGEMILL_PATH}/pagemill-fixtures-`date +"%m-%d-%y"`.json \
+        /home/${USER}/pagemill-backup/pagemill-fixtures-`date +"%m-%d-%y"`.json
     # backup media files
     cp ${PAGEMILL_PATH}/media.pagemill-`date +"%m-%d-%y"`.tar.gz \
         /home/${USER}/pagemill-backup/media.pagemill-`date +"%m-%d-%y"`.tar.gz
@@ -134,17 +132,17 @@ restore_pagemill() {
     # restore database
     cp /home/${USER}/pagemill-backup/${PAGEMILL_DATABASE} \
         ${PAGEMILL_PATH}/${PAGEMILL_DATABASE}
+    # restore fixtures
+    cp /home/${USER}/pagemill-backup/pagemill-fixtures-`date +"%m-%d-%y"`.json \
+        ${PAGEMILL_PATH}/pagemill-fixtures.json
     # restore media files
     cp /home/${USER}/pagemill-backup/${PAGEMILL_MEDIA_FILES} \
         ${PAGEMILL_PATH}/${PAGEMILL_MEDIA_FILES}
 }
 
-# TODO: sqlite3
 loaddb_pagemill() {
-    echo "*** LOAD DATABASE ***"
-    # docker exec pagemill-web dropdb -U postgres -h db postgres
-    # docker exec pagemill-web createdb -U postgres -h db postgres --encoding UNICODE --template=template0
-    # docker exec pagemill-web psql -U postgres -h db -f ${PAGEMILL_DATABASE} --quiet
+    echo "*** LOAD FIXTURES ***"
+    docker exec pagemill-web python manage.py loaddata pagemill-fixtures.json
     docker exec pagemill-web python manage.py collectstatic --no-input
     docker exec pagemill-web python manage.py migrate
 }

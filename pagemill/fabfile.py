@@ -335,6 +335,7 @@ def postgres(command):
 
 @task
 def psql(sql, show=True):
+    # TODO: sqlite3
     """
     Runs SQL against the project's database.
     """

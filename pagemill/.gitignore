@@ -9,5 +9,4 @@ init-web
 /log
 /static
 /media_files
-pg.pagemill-testing.sql
 media.pagemill-testing.tar.gz
