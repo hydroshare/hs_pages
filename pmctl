@@ -141,10 +141,10 @@ restore_pagemill() {
 }
 
 loaddb_pagemill() {
-    echo "*** LOAD FIXTURES ***"
-    docker exec pagemill-web python manage.py loaddata pagemill-fixtures.json
+    echo "*** LOAD DB / FIXTURES ***"
     docker exec pagemill-web python manage.py collectstatic --no-input
     docker exec pagemill-web python manage.py migrate
+    docker exec pagemill-web python manage.py loaddata pagemill-fixtures.json
 }
 
 loadmedia_pagemill() {
