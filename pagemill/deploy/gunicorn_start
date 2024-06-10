@@ -5,7 +5,7 @@
 
 NAME="pagemill"                                 # Name of the application
 DJANGODIR=/home/docker/pagemill                 # Django project directory
-SOCKFILE=/var/run/gunicorn.sock                 # we will communicte using this unix socket
+# SOCKFILE=/var/run/gunicorn.sock                 # we will communicte using this unix socket
 USER=root                                       # the user to run as
 GROUP=root                                      # the group to run as
 NUM_WORKERS=$(python -c "exec(\"import multiprocessing\nprint( multiprocessing.cpu_count() * 2 + 1)\")")
@@ -15,6 +15,8 @@ DJANGO_WSGI_MODULE=pagemill.wsgi                # WSGI module name
 GUNICORN_LOG=/var/log/pagemill/gunicorn.log     # path to logfile
 TIMEOUT_PERIOD=30                               # timeout period in seconds
 MAX_REQUESTS=1000                               # maximum number of requests a worker will process before restarting
+HOST=0.0.0.0                                    # Host IP address
+PORT=8000                                       # Port number
 
 ### Do not edit below this line ###
 echo "Starting $NAME as `whoami`"
@@ -30,7 +32,7 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
   --workers $NUM_WORKERS \
   --user=$USER \
   --group=$GROUP \
-  --bind=unix:$SOCKFILE \
+  --bind=$HOST:$PORT \
   --log-level=debug \
   --log-file=$GUNICORN_LOG \
   --timeout=$TIMEOUT_PERIOD \

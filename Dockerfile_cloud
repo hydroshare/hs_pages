@@ -1,0 +1,28 @@
+# For building standalone docker containers for Cloud Run or similar
+FROM python:3.9-buster
+
+COPY . /home/docker
+WORKDIR /home/docker
+
+RUN apt-get update && apt-get install -y supervisor
+
+# Install pip packages
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+
+RUN cp pagemill/deploy/pagemill.conf /etc/supervisor/conf.d/pagemill.conf
+
+RUN mkdir -p /var/log/pagemill
+
+WORKDIR /home/docker/pagemill
+RUN python manage.py collectstatic --noinput
+
+# Cleanup
+RUN apt-get clean
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/mezzanine
+
+EXPOSE 8000
+CMD ["/usr/bin/supervisord", "-n"]
