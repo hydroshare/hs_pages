@@ -79,7 +79,7 @@ run_pagemill() {
 
 backup_pagemill() {
     echo "*** BACKUP DATABASE, MEDIA AND SETTINGS FILES ***"
-    docker exec pagemill-web python manage.py dumpdata > "pagemill-fixtures-`date +"%m-%d-%y"`.json"
+    docker exec pagmill-web python manage.py dumpdata --exclude auth --exclude contenttypes --exclude sessions --exclude admin --exclude sites > "pagemill-fixtures-`date +"%m-%d-%y"`.json"
     if [ ! -d "${PAGEMILL_PATH}/media_files" ]; then
         mkdir ${PAGEMILL_PATH}/media_files;
     fi
