@@ -22,9 +22,9 @@ RUN cp pagemill/deploy/pagemill.conf /etc/supervisor/conf.d/pagemill.conf
 RUN mkdir -p /var/log/pagemill
 
 WORKDIR /home/docker/pagemill
-RUN python manage.py collectstatic --noinput
-RUN python manage.py migrate --noinput --fake-initial
-RUN python manage.py loaddata pagemill-fixtures.json
+# RUN python manage.py collectstatic --noinput
+# RUN python manage.py migrate --noinput --fake-initial
+# RUN python manage.py loaddata pagemill-fixtures.json
 
 # Create default admin user
 RUN python manage.py createsuperuser --noinput
@@ -33,5 +33,8 @@ RUN python manage.py createsuperuser --noinput
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/mezzanine
 
+COPY docker-entrypoint.sh /usr/local/bin/
+
 EXPOSE 8000
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-n"]
