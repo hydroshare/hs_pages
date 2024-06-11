@@ -3,8 +3,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 import sys
 
-from django import VERSION as DJANGO_VERSION
-from django.utils.translation import ugettext_lazy as _
+local_settings_module = os.environ.get("LOCAL_SETTINGS", "pagemill.local_settings")
 
 
 ######################
@@ -178,18 +177,30 @@ DATABASES = {
 #########
 
 # Full filesystem path to the project.
-PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
-PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
-PROJECT_ROOT = BASE_DIR = os.path.dirname(PROJECT_APP_PATH)
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(PROJECT_ROOT)
+
+# Name of the directory for the project.
+PROJECT_DIRNAME = PROJECT_ROOT.split(os.sep)[-1]
 
 # Every cache key will get prefixed with this value - here we set it to
 # the name of the directory the project is in to try and use something
 # project specific.
-CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_APP
+CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_DIRNAME
+
+# List of finder classes that know how to find static files in
+# various locations.
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    # "django.contrib.staticfiles.finders.DefaultStorageFinder",
+    # We disable the DefaultStorageFinder because otherwise it will search for static files in Google Cloud Storage
+    # https://docs.djangoproject.com/en/3.2/ref/settings/#staticfiles-finders
+)
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = "/static/"
+STATIC_URL = "/static/static/"
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -198,7 +209,7 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
 
 # Package/module name to import the root urlpatterns from for the project.
-ROOT_URLCONF = "%s.urls" % PROJECT_APP
+ROOT_URLCONF = "%s.urls" % PROJECT_DIRNAME
 
 MEDIA_URL = "/static/media/"
 
@@ -209,10 +220,7 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            os.path.join(PROJECT_ROOT, "templates")
-        ],
-        "APP_DIRS": True,
+        "DIRS": [os.path.join(BASE_DIR, "pagemill", "templates")],
         "OPTIONS": {
             "context_processors": [
                 "django.contrib.auth.context_processors.auth",
@@ -226,12 +234,20 @@ TEMPLATES = [
                 "mezzanine.conf.context_processors.settings",
                 "mezzanine.pages.context_processors.page",
             ],
+            "loaders": [
+                "mezzanine.template.loaders.host_themes.Loader",
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
+            ],
+            "builtins": [
+                "django.templatetags.static",
+            ],
+            "libraries": {
+                "staticfiles": "django.templatetags.static",
+            },
         },
     },
 ]
-
-if DJANGO_VERSION < (1, 9):
-    del TEMPLATES[0]["OPTIONS"]["builtins"]
 
 ################
 # APPLICATIONS #
@@ -323,7 +339,6 @@ GRAPPELLI_INSTALLED = True
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be
 # defined per machine.
-local_settings_module = os.environ.get("LOCAL_SETTINGS", "pagemill.local_settings")
 local_settings = __import__(local_settings_module, globals(), locals(), ["*"])
 for k in dir(local_settings):
     locals()[k] = getattr(local_settings, k)
