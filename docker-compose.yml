@@ -9,7 +9,5 @@ services:
       - /var/run
     ports:
       - "8000:8000"
-      - "1338:22"
-    command: /bin/bash init-web
     restart: unless-stopped
   

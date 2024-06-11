@@ -1,47 +1,36 @@
+# For building standalone docker containers for Cloud Run or similar
 FROM python:3.9-buster
-MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
 
-RUN apt-get update && \
-    apt-get install -y lsb-release curl ca-certificates && \
-    install -d /usr/share/postgresql-common/pgdg && \
-    curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc && \
-    sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+ENV DJANGO_SUPERUSER_PASSWORD=default
+ENV DJANGO_SUPERUSER_EMAIL=admin@example.org
+ENV DJANGO_SUPERUSER_USERNAME=admin
 
-# Install debian system packages / prerequisites
-RUN apt-get update && apt-get install -y \
-    openssh-client \
-    openssh-server \
-    supervisor \
-    rsync
+COPY . /home/docker
+WORKDIR /home/docker
 
-COPY . /tmp
-RUN cp /tmp/requirements.txt /requirements.txt
+RUN apt-get update && apt-get install -y supervisor
 
 # Install pip packages
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
-# Install SSH for remote PyCharm debugging
-RUN mkdir /var/run/sshd
-RUN echo 'root:screencast' | chpasswd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# SSH login fix. Otherwise user is kicked off after login
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
-# Add docker user for use with SSH debugging
-RUN useradd -m docker \
-    && echo 'docker:docker' | chpasswd
+RUN cp pagemill/deploy/pagemill.conf /etc/supervisor/conf.d/pagemill.conf
+
+RUN mkdir -p /var/log/pagemill
+
+WORKDIR /home/docker/pagemill
 
 # Cleanup
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/mezzanine
+RUN rm -rf /root/.cache
 
-# Set entry working directory 
-WORKDIR /home/docker/pagemill
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+EXPOSE 8000
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["/usr/bin/supervisord", "-n"]

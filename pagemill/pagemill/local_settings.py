@@ -8,7 +8,7 @@
 from datetime import timedelta
 from google.oauth2 import service_account
 import os
-DEBUG = True
+DEBUG = False
 
 # Make these unique, and don't share it with anybody.
 SECRET_KEY = "---this-is-a-fake-key-and-it-should-be-replaced---"

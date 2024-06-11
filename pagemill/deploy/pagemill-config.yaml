@@ -1,9 +1,0 @@
-### Hostname ###
-FQDN_OR_IP: localhost
-
-### Application configuration ###
-PAGEMILL_PATH: pagemill
-PAGEMILL_DATABASE: sqlite.db
-PAGEMILL_MEDIA_FILES: media.pagemill-testing.tar.gz
-
-### REQUIRES BLANK LINE AFTER LAST VARIABLE DEFINITION ###
