@@ -8,6 +8,7 @@
 from datetime import timedelta
 from google.oauth2 import service_account
 import os
+import json
 DEBUG = True
 
 # Make these unique, and don't share it with anybody.
@@ -68,7 +69,7 @@ GS_QUERYSTRING_AUTH = False
 GS_DEFAULT_ACL = None
 # https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.service_account.html#google.oauth2.service_account.Credentials.from_service_account_info
 GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
-    os.environ.get('HYDROSHARE_GCS_SA')
+    json.loads(os.environ.get('HYDROSHARE_GCS_SA'))
 )
 DEFAULT_FILE_STORAGE = 'pagemill.storage.FileBrowserGoogleCloudStorage'
 # the media is served from the root of the bucket
