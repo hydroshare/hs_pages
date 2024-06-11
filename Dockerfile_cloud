@@ -1,6 +1,10 @@
 # For building standalone docker containers for Cloud Run or similar
 FROM python:3.9-buster
 
+ARG DJANGO_SUPERUSER_PASSWORD=default
+ARG DJANGO_SUPERUSER_EMAIL=admin@example.org
+ARG DJANGO_SUPERUSER_USERNAME=admin
+
 COPY . /home/docker
 WORKDIR /home/docker
 
@@ -21,6 +25,9 @@ WORKDIR /home/docker/pagemill
 RUN python manage.py collectstatic --noinput
 RUN python manage.py migrate --noinput --fake-initial
 RUN python manage.py loaddata pagemill-fixtures.json
+
+# Create default admin user
+RUN python manage.py createsuperuser --noinput
 
 # Cleanup
 RUN apt-get clean
