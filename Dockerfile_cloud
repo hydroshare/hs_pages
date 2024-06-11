@@ -22,16 +22,11 @@ RUN cp pagemill/deploy/pagemill.conf /etc/supervisor/conf.d/pagemill.conf
 RUN mkdir -p /var/log/pagemill
 
 WORKDIR /home/docker/pagemill
-# RUN python manage.py collectstatic --noinput
-# RUN python manage.py migrate --noinput --fake-initial
-# RUN python manage.py loaddata pagemill-fixtures.json
-
-# Create default admin user
-# RUN python manage.py createsuperuser --noinput
 
 # Cleanup
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/mezzanine
+RUN rm -rf /root/.cache
 
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
