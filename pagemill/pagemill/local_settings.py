@@ -64,12 +64,11 @@ GS_PROJECT_ID = 'hydroshare-gc-project'
 GS_BUCKET_NAME = 'hydroshare-help-pages-media'
 GS_BLOB_CHUNK_SIZE = 1024 * 256 * 40  # Needed for uploading large streams
 GS_EXPIRATION = timedelta(minutes=5)
-GS_SERVICE_ACCOUNT_FILENAME = 'hydroshare-gcs-sa.json'
 GS_QUERYSTRING_AUTH = False
 GS_DEFAULT_ACL = None
 # https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.service_account.html#google.oauth2.service_account.Credentials.from_service_account_info
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, GS_SERVICE_ACCOUNT_FILENAME)
+GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
+    os.environ.get('HYDROSHARE_GCS_SA')
 )
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
 # the media is served from the root of the bucket
