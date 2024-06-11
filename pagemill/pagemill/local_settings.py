@@ -70,7 +70,7 @@ GS_DEFAULT_ACL = None
 GS_CREDENTIALS = service_account.Credentials.from_service_account_info(
     os.environ.get('HYDROSHARE_GCS_SA')
 )
-DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+DEFAULT_FILE_STORAGE = 'pagemill.storage.FileBrowserGoogleCloudStorage'
 # the media is served from the root of the bucket
 MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
 MEDIA_ROOT = MEDIA_URL
