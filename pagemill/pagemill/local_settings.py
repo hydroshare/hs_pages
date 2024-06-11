@@ -5,6 +5,9 @@
 # have to be manually restarted because changes will not be noticed
 # immediately.
 
+from datetime import timedelta
+from google.oauth2 import service_account
+import os
 DEBUG = True
 
 # Make these unique, and don't share it with anybody.
@@ -55,9 +58,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ----- START of settings for using Google Cloud Storage for static files ----- |
 ENABLE_STATIC_CLOUD_STORAGE = True
-import os
-from google.oauth2 import service_account
-from datetime import timedelta
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(PROJECT_ROOT)
 GS_PROJECT_ID = 'hydroshare-gc-project'

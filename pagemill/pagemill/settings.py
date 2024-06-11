@@ -1,6 +1,7 @@
 
 from __future__ import absolute_import, unicode_literals
 import os
+import sys
 
 from django import VERSION as DJANGO_VERSION
 from django.utils.translation import ugettext_lazy as _
@@ -90,9 +91,17 @@ USE_MODELTRANSLATION = False
 # MAIN DJANGO SETTINGS #
 ########################
 
+# People who get code error notifications.
+# In the format (('Full Name', 'email@example.com'),
+#                ('Full Name', 'anotheremail@example.com'))
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+)
+MANAGERS = ADMINS
+
 # Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+# https://docs.djangoproject.com/en/3.2/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = ["*"]
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -111,9 +120,10 @@ USE_TZ = True
 LANGUAGE_CODE = "en"
 
 # Supported languages
-LANGUAGES = (
-    ('en', _('English')),
-)
+def _(s): return s # noqa
+
+
+LANGUAGES = (("en", _("English")),)
 
 # A boolean that turns on/off debug mode. When set to ``True``, stack traces
 # are displayed for error pages. Should always be set to ``False`` in
@@ -128,6 +138,11 @@ SITE_ID = 1
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = False
+
+# Tuple of IP addresses, as strings, that:
+#   * See debug comments, when DEBUG is true
+#   * Receive x-headers
+INTERNAL_IPS = ("127.0.0.1",)
 
 AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
 
@@ -181,15 +196,6 @@ STATIC_URL = "/static/"
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = "/media/"
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
 
 # Package/module name to import the root urlpatterns from for the project.
 ROOT_URLCONF = "%s.urls" % PROJECT_APP
@@ -294,6 +300,16 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
+TESTING = sys.argv[1:2] == ['test']
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+GRAPPELLI_INSTALLED = True
+
+####################################
+# DO NOT PLACE SETTINGS BELOW HERE #
+####################################
+
 ##################
 # LOCAL SETTINGS #
 ##################
@@ -301,23 +317,24 @@ OPTIONAL_APPS = (
 # Allow any settings to be defined in local_settings.py which should be
 # ignored in your version control system allowing for settings to be
 # defined per machine.
+local_settings_module = os.environ.get("LOCAL_SETTINGS", "pagemill.local_settings")
+local_settings = __import__(local_settings_module, globals(), locals(), ["*"])
+for k in dir(local_settings):
+    locals()[k] = getattr(local_settings, k)
 
-# Instead of doing "from .local_settings import *", we use exec so that
-# local_settings has full access to everything defined in this module.
-# Also force into sys.modules so it's visible to Django's autoreload.
+####################
+# DYNAMIC SETTINGS #
+####################
 
-f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
-if os.path.exists(f):
-    import sys
-    import imp
-    module_name = "%s.local_settings" % PROJECT_APP
-    module = imp.new_module(module_name)
-    module.__file__ = f
-    sys.modules[module_name] = module
-    exec(open(f, "rb").read())
-
-TESTING = sys.argv[1:2] == ['test']
-
-DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
-
-GRAPPELLI_INSTALLED = True
+# set_dynamic_settings() will rewrite globals based on what has been
+# defined so far, in order to provide some better defaults where
+# applicable. We also allow this settings module to be imported
+# without Mezzanine installed, as the case may be when using the
+# fabfile, where setting the dynamic settings below isn't strictly
+# required.
+try:
+    from mezzanine.utils.conf import set_dynamic_settings
+except ImportError:
+    pass
+else:
+    set_dynamic_settings(globals())
