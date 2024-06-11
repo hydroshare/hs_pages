@@ -200,6 +200,12 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
 # Package/module name to import the root urlpatterns from for the project.
 ROOT_URLCONF = "%s.urls" % PROJECT_APP
 
+MEDIA_URL = "/static/media/"
+
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/media/"
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, *MEDIA_URL.strip("/").split("/"))
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
