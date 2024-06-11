@@ -1,37 +1,15 @@
-db:
-  container_name: pagemill-db
-  image: postgres:9.4
-  restart: unless-stopped
-web:
-  container_name: pagemill-web
-  build: .
-  environment:
-    POSTGRES_PASSWORD: postgres
-    POSTGRES_USER: postgres
-    #PGDATA: /var/lib/postgresql/data
-    POSTGRES_DB: postgres
-  volumes:
-    - ./pagemill:/home/docker/pagemill
-    - ./pagemill/log:/var/log/pagemill
-    - /var/run
-  ports:
-    - "8000:8000"
-    - "1338:22"
-  links:
-    - db:db
-  command: /bin/bash init-web
-  restart: unless-stopped
-nginx:
-  container_name: pagemill-nginx
-  image: nginx:1.9
-  volumes_from:
-    - web
-  volumes:
-    - ./certs:/certs
-  ports:
-    - "80:80"
-    - "443:443"
-  links:
-    - web:web
-  restart: unless-stopped
+version: '3'
+services:
+  web:
+    container_name: pagemill-web
+    build: .
+    volumes:
+      - ./pagemill:/home/docker/pagemill
+      - ./pagemill/log:/var/log/pagemill
+      - /var/run
+    ports:
+      - "8000:8000"
+      - "1338:22"
+    command: /bin/bash init-web
+    restart: unless-stopped
   

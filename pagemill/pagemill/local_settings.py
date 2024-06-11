@@ -5,6 +5,9 @@
 # have to be manually restarted because changes will not be noticed
 # immediately.
 
+from datetime import timedelta
+from google.oauth2 import service_account
+import os
 DEBUG = True
 
 # Make these unique, and don't share it with anybody.
@@ -14,17 +17,17 @@ NEVERCACHE_KEY = "---this-is-a-fake-key-and-it-should-be-replaced---"
 DATABASES = {
     "default": {
         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.db.backends.sqlite3",
         # DB name or path to database file if using sqlite3.
-        "NAME": "postgres",
+        "NAME": "sqlite.db",
         # Not used with sqlite3.
-        "USER": "postgres",
+        "USER": "",
         # Not used with sqlite3.
-        "PASSWORD": "postgres",
+        "PASSWORD": "",
         # Set to empty string for localhost. Not used with sqlite3.
-        "HOST": "db",
+        "HOST": "",
         # Set to empty string for default. Not used with sqlite3.
-        "PORT": "5432",
+        "PORT": "",
     }
 }
 
@@ -50,3 +53,26 @@ ALLOWED_HOSTS = ["*"]
 #     "SECRET_KEY": SECRET_KEY,
 #     "NEVERCACHE_KEY": NEVERCACHE_KEY,
 # }
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# ----- START of settings for using Google Cloud Storage for static files ----- |
+ENABLE_STATIC_CLOUD_STORAGE = True
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(PROJECT_ROOT)
+GS_PROJECT_ID = 'hydroshare-gc-project'
+GS_BUCKET_NAME = 'hydroshare-help-pages-media'
+GS_BLOB_CHUNK_SIZE = 1024 * 256 * 40  # Needed for uploading large streams
+GS_EXPIRATION = timedelta(minutes=5)
+GS_QUERYSTRING_AUTH = False
+GS_DEFAULT_ACL = None
+GS_SERVICE_ACCOUNT_FILENAME = 'hydroshare-gcs-sa.json'
+# requires that hydroshare-gcs-sa.json be placed in the BASE_DIR
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, GS_SERVICE_ACCOUNT_FILENAME)
+)
+DEFAULT_FILE_STORAGE = 'pagemill.storage.FileBrowserGoogleCloudStorage'
+# the media is served from the root of the bucket
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+MEDIA_ROOT = MEDIA_URL
+# ----- END of settings for using Google Cloud Storage for static files ----- |

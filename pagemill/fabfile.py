@@ -7,7 +7,6 @@ import sys
 from contextlib import contextmanager
 from functools import wraps
 from getpass import getpass, getuser
-from glob import glob
 from importlib import import_module
 from posixpath import join
 
@@ -55,7 +54,7 @@ env.venv_path = join(env.venv_home, env.proj_name)
 env.proj_path = "/home/%s/mezzanine/%s" % (env.user, env.proj_name)
 env.manage = "%s/bin/python %s/manage.py" % (env.venv_path, env.proj_path)
 env.domains = conf.get("DOMAINS", [conf.get("LIVE_HOSTNAME", env.hosts[0])])
-env.domains_nginx = " ".join(env.domains)
+# env.domains_nginx = " ".join(env.domains)
 env.domains_regex = "|".join(env.domains)
 env.domains_python = ", ".join(["'%s'" % s for s in env.domains])
 env.ssl_disabled = "#" if len(env.domains) > 1 else ""
@@ -85,11 +84,6 @@ else:
 # also run.
 
 templates = {
-    "nginx": {
-        "local_path": "deploy/nginx.conf.template",
-        "remote_path": "/etc/nginx/sites-enabled/%(proj_name)s.conf",
-        "reload_command": "service nginx restart",
-    },
     "supervisor": {
         "local_path": "deploy/supervisor.conf.template",
         "remote_path": "/etc/supervisor/conf.d/%(proj_name)s.conf",
@@ -138,12 +132,14 @@ def project():
 
 @contextmanager
 def update_changed_requirements():
+    def get_reqs():
+        return run("cat %s" % reqs_path, show=False)
+
     """
     Checks for changes in the requirements file across an update,
     and gets new requirements if changes have occurred.
     """
     reqs_path = join(env.proj_path, env.reqs_path)
-    get_reqs = lambda: run("cat %s" % reqs_path, show=False)
     old_reqs = get_reqs() if env.reqs_path else ""
     yield
     if old_reqs:
@@ -222,6 +218,10 @@ def get_templates():
     return injected
 
 
+def clean(s):
+    return s.replace("\n", "").replace("\r", "").strip()
+
+
 def upload_template_and_reload(name):
     """
     Uploads a template only if it has changed, and if so, reload the
@@ -247,7 +247,6 @@ def upload_template_and_reload(name):
         if "%(db_pass)s" in local_data:
             env.db_pass = db_pass()
         local_data %= env
-    clean = lambda s: s.replace("\n", "").replace("\r", "").strip()
     if clean(remote_data) == clean(local_data):
         return
     upload_template(local_path, remote_path, env, use_sudo=True, backup=False)
@@ -264,7 +263,7 @@ def rsync_upload():
     Uploads the project with rsync excluding some files and folders.
     """
     excludes = ["*.pyc", "*.pyo", "*.db", ".DS_Store", ".coverage",
-                "local_settings.py", "/static", "/.git", "/.hg"]
+                "local_settings.py", "/static", "/media", "/.git", "/.hg"]
     local_dir = os.getcwd() + os.sep
     return rsync_project(remote_dir=env.proj_path, local_dir=local_dir,
                          exclude=excludes)
@@ -326,6 +325,7 @@ def pip(packages):
 
 
 def postgres(command):
+    # TODO: sqlite3
     """
     Runs the given command as the postgres user.
     """
@@ -335,6 +335,7 @@ def postgres(command):
 
 @task
 def psql(sql, show=True):
+    # TODO: sqlite3
     """
     Runs SQL against the project's database.
     """
@@ -346,6 +347,7 @@ def psql(sql, show=True):
 
 @task
 def backup(filename):
+    # TODO: sqlite3
     """
     Backs up the project database.
     """
@@ -361,6 +363,7 @@ def backup(filename):
 
 @task
 def restore(filename):
+    # TODO: sqlite3
     """
     Restores the project database from a previous backup.
     """
@@ -435,8 +438,8 @@ def install():
     """
     # Install system requirements
     sudo("apt-get update -y -q")
-    apt("nginx libjpeg-dev python-dev python-setuptools git-core "
-        "postgresql libpq-dev memcached supervisor python-pip")
+    apt("libjpeg-dev python-dev python-setuptools git-core "
+        "sqlite3 libpq-dev memcached supervisor python-pip")
     run("mkdir -p /home/%s/logs" % env.user)
 
     # Install Python requirements
@@ -499,26 +502,6 @@ def create():
     psql("CREATE DATABASE %s WITH OWNER %s ENCODING = 'UTF8' "
          "LC_CTYPE = '%s' LC_COLLATE = '%s' TEMPLATE template0;" %
          (env.proj_name, env.proj_name, env.locale, env.locale))
-
-    # Set up SSL certificate
-    if not env.ssl_disabled:
-        conf_path = "/etc/nginx/conf"
-        if not exists(conf_path):
-            sudo("mkdir %s" % conf_path)
-        with cd(conf_path):
-            crt_file = env.proj_name + ".crt"
-            key_file = env.proj_name + ".key"
-            if not exists(crt_file) and not exists(key_file):
-                try:
-                    crt_local, = glob(join("deploy", "*.crt"))
-                    key_local, = glob(join("deploy", "*.key"))
-                except ValueError:
-                    parts = (crt_file, key_file, env.domains[0])
-                    sudo("openssl req -new -x509 -nodes -out %s -keyout %s "
-                         "-subj '/CN=%s' -days 3650" % parts)
-                else:
-                    upload_template(crt_local, crt_file, use_sudo=True)
-                    upload_template(key_local, key_file, use_sudo=True)
 
     # Install project-specific requirements
     upload_template_and_reload("settings")
@@ -613,9 +596,9 @@ def deploy():
     if env.deploy_tool in env.vcs_tools:
         with cd(env.repo_path):
             if env.deploy_tool == "git":
-                    run("git rev-parse HEAD > %s/last.commit" % env.proj_path)
+                run("git rev-parse HEAD > %s/last.commit" % env.proj_path)
             elif env.deploy_tool == "hg":
-                    run("hg id -i > last.commit")
+                run("hg id -i > last.commit")
         with project():
             static_dir = static()
             if exists(static_dir):
@@ -656,10 +639,10 @@ def rollback():
         if env.deploy_tool in env.vcs_tools:
             with cd(env.repo_path):
                 if env.deploy_tool == "git":
-                        run("GIT_WORK_TREE={0} git checkout -f "
-                            "`cat {0}/last.commit`".format(env.proj_path))
+                    run("GIT_WORK_TREE={0} git checkout -f "
+                        "`cat {0}/last.commit`".format(env.proj_path))
                 elif env.deploy_tool == "hg":
-                        run("hg update -C `cat last.commit`")
+                    run("hg update -C `cat last.commit`")
             with project():
                 with cd(join(static(), "..")):
                     run("tar -xf %s/static.tar" % env.proj_path)
