@@ -1,3 +1,4 @@
 .idea
 certs
 run-server
+hydroshare-gcs-sa.json

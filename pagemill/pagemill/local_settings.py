@@ -52,3 +52,27 @@ ALLOWED_HOSTS = ["*"]
 # }
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# ----- START of settings for using Google Cloud Storage for static files ----- |
+ENABLE_STATIC_CLOUD_STORAGE = True
+import os
+from google.oauth2 import service_account
+from datetime import timedelta
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(PROJECT_ROOT)
+GS_PROJECT_ID = 'hydroshare-gc-project'
+GS_BUCKET_NAME = 'hydroshare-help-pages-media'
+GS_BLOB_CHUNK_SIZE = 1024 * 256 * 40  # Needed for uploading large streams
+GS_EXPIRATION = timedelta(minutes=5)
+GS_SERVICE_ACCOUNT_FILENAME = 'hydroshare-gcs-sa.json'
+GS_QUERYSTRING_AUTH = False
+GS_DEFAULT_ACL = None
+# https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.service_account.html#google.oauth2.service_account.Credentials.from_service_account_info
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR, GS_SERVICE_ACCOUNT_FILENAME)
+)
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# the media is served from the root of the bucket
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+MEDIA_ROOT = MEDIA_URL
+# ----- END of settings for using Google Cloud Storage for static files ----- |
