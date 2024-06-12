@@ -66,10 +66,11 @@ GS_BLOB_CHUNK_SIZE = 1024 * 256 * 40  # Needed for uploading large streams
 GS_EXPIRATION = timedelta(minutes=5)
 GS_QUERYSTRING_AUTH = False
 GS_DEFAULT_ACL = None
-GS_SERVICE_ACCOUNT_FILENAME = 'hydroshare-gcs-sa.json'
+GS_SERVICE_ACCOUNT_FILENAME = os.getenv('GS_SERVICE_ACCOUNT_FILENAME', 'hydroshare-gcs-sa.json')
+GS_SERVICE_ACCOUNT_PATH = os.getenv('GS_SERVICE_ACCOUNT_PATH', BASE_DIR)
 # requires that hydroshare-gcs-sa.json be placed in the BASE_DIR
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, GS_SERVICE_ACCOUNT_FILENAME)
+    os.path.join(GS_SERVICE_ACCOUNT_PATH, GS_SERVICE_ACCOUNT_FILENAME)
 )
 DEFAULT_FILE_STORAGE = 'pagemill.storage.FileBrowserGoogleCloudStorage'
 # the media is served from the root of the bucket
