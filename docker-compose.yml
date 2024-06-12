@@ -4,9 +4,7 @@ services:
     container_name: pagemill-web
     build: .
     volumes:
-      - ./pagemill:/home/docker/pagemill
       - ./pagemill/log:/var/log/pagemill
-      - /var/run
     ports:
       - "8000:8000"
     restart: unless-stopped
