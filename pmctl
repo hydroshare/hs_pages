@@ -210,7 +210,7 @@ loadmedia_pagemill() {
     echo "*** LOAD MEDIA FILES ***"
     cd ${PAGEMILL_PATH}
     tar -xzvf ${PAGEMILL_MEDIA_FILES}
-    cp -r media_files/media pagemill/media/
+    cp -r media_files/media/ pagemill/media/
     cd -
 }
 
