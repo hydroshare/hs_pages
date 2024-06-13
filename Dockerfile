@@ -1,21 +1,19 @@
-FROM python:2.7
-MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
+FROM python:3.9-buster
 
 # Install debian system packages / prerequisites
 RUN apt-get update && apt-get install -y \
-    postgresql-9.4 \
-    postgresql-client-9.4 \
+    postgresql-11 \
+    postgresql-client-11 \
     openssh-client \
     openssh-server \
     supervisor \
     rsync
 
-COPY . /tmp
-RUN cp /tmp/requirements.txt /requirements.txt
+ADD ./requirements.txt /requirements.txt
 
 # Install pip packages
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
 
 # Install SSH for remote PyCharm debugging
 RUN mkdir /var/run/sshd
