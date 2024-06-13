@@ -29,28 +29,28 @@ display_usage() {
 
 stop_pagemill() {
     echo "*** STOP ***"
-    docker-compose stop
+    docker compose stop
 }
 
 start_pagemill() {
     echo "*** START ***"
-    docker-compose start
+    docker compose start
 }
 
 remove_pagemill() {
     echo "*** REMOVE ***"
     # if web is running remove the static directory
-    if [[ -n "$(docker-compose ps | grep web | grep Up)" ]]; then
+    if [[ -n "$(docker compose ps | grep web | grep Up)" ]]; then
         echo "*** INFO: Remove /static directory ***"
         docker exec pagemill-web rm -rf static
     fi
     stop_pagemill
-    docker-compose rm -f
+    docker compose rm -f
 }
 
 start_nginx() {
     echo "*** START NGINX ***"
-    if [[ ! -n "$(docker-compose ps | grep nginx | grep Up)" ]]; then
+    if [[ ! -n "$(docker compose ps | grep nginx | grep Up)" ]]; then
         echo "*** INFO: nginx is not running, waiting ***"
     fi
     if [[ $USE_NGINX = 'true' ]]; then
@@ -67,15 +67,15 @@ start_nginx() {
         cd ../
     else
         echo "*** INFO: Not using Nginx ***"
-        docker-compose stop nginx
+        docker compose stop nginx
     fi
 }
 
 stop_nginx() {
     echo "*** STOP NGINX ***"
-    if [[ -n "$(docker-compose ps | grep nginx | grep Up)" ]]; then
+    if [[ -n "$(docker compose ps | grep nginx | grep Up)" ]]; then
         echo "*** INFO: Stopping Nginx now ***"
-        docker-compose stop nginx
+        docker compose stop nginx
     else
         echo "*** INFO: Nginx is not running ***"
     fi
@@ -124,13 +124,13 @@ preflight_pagemill() {
 
 build_pagemill() {
     echo "*** BUILD ***"
-    docker-compose build
+    docker compose build
 }
 
 run_pagemill() {
     echo "*** RUN ***"
     preflight_pagemill
-    docker-compose up -d
+    docker compose up -d
 }
 
 backup_pagemill() {
