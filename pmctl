@@ -92,6 +92,10 @@ restart_pagemill() {
 preflight_pagemill() {
     echo "*** PREFLIGHT ***";
     echo $PAGEMILL_PATH
+    if [ ! -d "${PAGEMILL_PATH}/pagemill/media" ]; then
+        echo "*** INFO: Creating /media directory ***"
+        mkdir ${PAGEMILL_PATH}/pagemill/media;
+    fi
     if [[ $USE_NGINX = 'true' ]]; then
         echo "*** INFO: Using Nginx ***"
         if [[ $USE_SSL = 'true' ]]; then
@@ -136,9 +140,9 @@ backup_pagemill() {
     if [ ! -d "${PAGEMILL_PATH}/media_files" ]; then
         mkdir ${PAGEMILL_PATH}/media_files;
     fi
-    docker exec pagemill-web rsync -avh --dry-run /home/docker/pagemill/static/media \
+    docker exec pagemill-web rsync -avh --dry-run /home/docker/pagemill/pagemill/media \
         /home/docker/pagemill/media_files
-    docker exec pagemill-web rsync -avh /home/docker/pagemill/static/media \
+    docker exec pagemill-web rsync -avh /home/docker/pagemill/pagemill/media \
         /home/docker/pagemill/media_files
     cd ${PAGEMILL_PATH}
     tar -czvf "media.pagemill-`date +"%m-%d-%y"`.tar.gz" media_files
@@ -206,10 +210,7 @@ loadmedia_pagemill() {
     echo "*** LOAD MEDIA FILES ***"
     cd ${PAGEMILL_PATH}
     tar -xzvf ${PAGEMILL_MEDIA_FILES}
-    if [ ! -d "${PAGEMILL_PATH}/static" ]; then
-        mkdir ${PAGEMILL_PATH}/static;
-    fi
-    cp -r media_files/media static/
+    cp -r media_files/media pagemill/media/
     cd -
 }
 
