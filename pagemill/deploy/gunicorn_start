@@ -5,7 +5,6 @@
 
 NAME="pagemill"                                 # Name of the application
 DJANGODIR=/home/docker/pagemill                 # Django project directory
-# SOCKFILE=/var/run/gunicorn.sock                 # we will communicte using this unix socket
 USER=root                                       # the user to run as
 GROUP=root                                      # the group to run as
 NUM_WORKERS=$(python -c "exec(\"import multiprocessing\nprint( multiprocessing.cpu_count() * 2 + 1)\")")

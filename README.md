@@ -13,7 +13,9 @@ Help pages based on Mezzanine / Django
 
   Run `docker build -t hs_pages .` and then `docker run -p 8000:8000 -d -t hs_pages`
 
-  You will need a copy of the sqlite database, which you can load. Or you can load fixtures using:
+  You will need a copy of the sqlite database, which you can load point to by changing the `DATABASES.NAME` in local_settings.py.
+  
+  Or you can load fixtures using:
   ```sh
   python manage.py loaddata pagemill-fixtures.json
   python manage.py createsuperuser --noinput
