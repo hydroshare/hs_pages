@@ -5,8 +5,6 @@
 # have to be manually restarted because changes will not be noticed
 # immediately.
 
-from datetime import timedelta
-from google.oauth2 import service_account
 import os
 DEBUG = False
 
@@ -54,26 +52,22 @@ ALLOWED_HOSTS = ["*"]
 #     "NEVERCACHE_KEY": NEVERCACHE_KEY,
 # }
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-# ----- START of settings for using Google Cloud Storage for static files ----- |
-ENABLE_STATIC_CLOUD_STORAGE = True
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-BASE_DIR = os.path.dirname(PROJECT_ROOT)
-GS_PROJECT_ID = 'hydroshare-gc-project'
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_URL = "/static/static/"
+
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
+
+
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 GS_BUCKET_NAME = 'hydroshare-help-pages-media'
-GS_BLOB_CHUNK_SIZE = 1024 * 256 * 40  # Needed for uploading large streams
-GS_EXPIRATION = timedelta(minutes=5)
-GS_QUERYSTRING_AUTH = False
-GS_DEFAULT_ACL = None
-GS_SERVICE_ACCOUNT_FILENAME = os.getenv('GS_SERVICE_ACCOUNT_FILENAME', 'hydroshare-gcs-sa.json')
-GS_SERVICE_ACCOUNT_PATH = os.getenv('GS_SERVICE_ACCOUNT_PATH', BASE_DIR)
-# requires that hydroshare-gcs-sa.json be placed in the BASE_DIR
-GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(GS_SERVICE_ACCOUNT_PATH, GS_SERVICE_ACCOUNT_FILENAME)
-)
-DEFAULT_FILE_STORAGE = 'pagemill.storage.FileBrowserGoogleCloudStorage'
 # the media is served from the root of the bucket
 MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
-MEDIA_ROOT = MEDIA_URL
-# ----- END of settings for using Google Cloud Storage for static files ----- |
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/media/"
+MEDIA_ROOT = "/mnt/media/"
