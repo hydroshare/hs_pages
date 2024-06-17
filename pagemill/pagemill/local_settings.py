@@ -55,7 +55,7 @@ ALLOWED_HOSTS = ["*"]
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_URL = "/static/static/"
+STATIC_URL = "/static/"
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
