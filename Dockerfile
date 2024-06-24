@@ -1,43 +1,31 @@
-FROM python:2.7
-MAINTAINER Michael J. Stealey <mjstealey@gmail.com>
+# For building standalone docker containers for Cloud Run or similar
+FROM python:3.9-buster
 
-# Install debian system packages / prerequisites
-RUN apt-get update && apt-get install -y \
-    postgresql-9.4 \
-    postgresql-client-9.4 \
-    openssh-client \
-    openssh-server \
-    supervisor \
-    rsync
+ENV DJANGO_SUPERUSER_PASSWORD=default
+ENV DJANGO_SUPERUSER_EMAIL=admin@example.org
+ENV DJANGO_SUPERUSER_USERNAME=admin
 
-COPY . /tmp
-RUN cp /tmp/requirements.txt /requirements.txt
+COPY . /home/docker
+WORKDIR /home/docker
 
 # Install pip packages
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
-# Install SSH for remote PyCharm debugging
-RUN mkdir /var/run/sshd
-RUN echo 'root:screencast' | chpasswd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-
-# SSH login fix. Otherwise user is kicked off after login
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
-
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
-# Add docker user for use with SSH debugging
-RUN useradd -m docker \
-    && echo 'docker:docker' | chpasswd
+RUN mkdir -p /var/log/pagemill
+
+WORKDIR /home/docker/pagemill
 
 # Cleanup
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/src/mezzanine
+RUN rm -rf /root/.cache
 
-# Set entry working directory 
-WORKDIR /home/docker/pagemill
+RUN chmod -R 755 /home/docker
 
-EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+EXPOSE 8000
+ENTRYPOINT ["/home/docker/docker-entrypoint.sh"]
+CMD ["/home/docker/pagemill/deploy/gunicorn_start"]

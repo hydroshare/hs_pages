@@ -4,11 +4,12 @@
 .DS_Store
 .coverage
 local_settings.py
-nginx.conf
 local-env.sh
 init-web
 /log
-/static
+/media
 /media_files
-pg.pagemill-testing.sql
 media.pagemill-testing.tar.gz
+
+run-server
+static
