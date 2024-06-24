@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-sleep 3s
-/usr/sbin/sshd
-/usr/bin/env bash run-server

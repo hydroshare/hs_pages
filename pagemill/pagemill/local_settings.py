@@ -5,7 +5,8 @@
 # have to be manually restarted because changes will not be noticed
 # immediately.
 
-DEBUG = True
+import os
+DEBUG = False
 
 # Make these unique, and don't share it with anybody.
 SECRET_KEY = "---this-is-a-fake-key-and-it-should-be-replaced---"
@@ -14,17 +15,17 @@ NEVERCACHE_KEY = "---this-is-a-fake-key-and-it-should-be-replaced---"
 DATABASES = {
     "default": {
         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": "django.db.backends.sqlite3",
         # DB name or path to database file if using sqlite3.
-        "NAME": "postgres",
+        "NAME": "/mnt/db/sqlite.db",
         # Not used with sqlite3.
-        "USER": "postgres",
+        "USER": "",
         # Not used with sqlite3.
-        "PASSWORD": "postgres",
+        "PASSWORD": "",
         # Set to empty string for localhost. Not used with sqlite3.
-        "HOST": "db",
+        "HOST": "",
         # Set to empty string for default. Not used with sqlite3.
-        "PORT": "5432",
+        "PORT": "",
     }
 }
 
@@ -50,3 +51,23 @@ ALLOWED_HOSTS = ["*"]
 #     "SECRET_KEY": SECRET_KEY,
 #     "NEVERCACHE_KEY": NEVERCACHE_KEY,
 # }
+
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_URL = "/static/"
+
+# Absolute path to the directory static files should be collected to.
+# Don't put anything in this directory yourself; store your static files
+# in apps' "static/" subdirectories and in STATICFILES_DIRS.
+# Example: "/home/media/media.lawrence.com/static/"
+STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
+
+
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+GS_BUCKET_NAME = 'hydroshare-help-pages-media'
+# the media is served from the root of the bucket
+MEDIA_URL = f'https://storage.googleapis.com/{GS_BUCKET_NAME}/'
+# Absolute filesystem path to the directory that will hold user-uploaded files.
+# Example: "/home/media/media.lawrence.com/media/"
+MEDIA_ROOT = "/mnt/media/"
